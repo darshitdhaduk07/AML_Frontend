@@ -1,0 +1,24 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  background: #f8fafc;
+}
+.left {
+  width: 50%;
+  display: flex;
+}
+.right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+@media (max-width: 900px) {
+  .left {
+    display: none;
+  }
+  .right {
+    width: 100%;
+  }
+}

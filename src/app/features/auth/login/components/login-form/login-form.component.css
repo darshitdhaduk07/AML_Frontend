@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 480px; /* Increased from 430px */
+}
+
+.card {
+  width: 100%;
+  max-width: 480px; /* Increased from 430px */
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 40px; /* Optional: Slightly increased padding to balance the wider form */
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* Leave the rest of your CSS below here exactly as it was! */
+h2 {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+.sub {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 28px;
+}
+/* ... */
+.group {
+  margin-bottom: 18px;
+}
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+}
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.link {
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+}
+button {
+  width: 100%;
+  border: none;
+  background: #0f172a;
+  color: #fff;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover:not(:disabled) {
+  background: #111f3b;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,12 @@
+<div class="toggle-container">
+  <button type="button" class="toggle-btn" 
+    [class.active]="selectedRole === 'BANK_ADMIN'" 
+    (click)="selectRole('BANK_ADMIN')">
+    Bank Admin
+  </button>
+  <button type="button" class="toggle-btn" 
+    [class.active]="selectedRole === 'COMPLIANCE_OFFICER'" 
+    (click)="selectRole('COMPLIANCE_OFFICER')">
+    Compliance Officer
+  </button>
+</div>
