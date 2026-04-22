@@ -14,7 +14,11 @@ import { AuthFooterComponent } from '../auth-footer/auth-footer.component';
 export class LoginFormComponent implements OnInit {
   @Input() isSystemAdmin: boolean = false;
   @Output() loginSubmit = new EventEmitter<any>();
+  
   loginForm: FormGroup;
+  
+  // NEW: State variable to track visibility
+  showPassword = false;
 
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
@@ -32,6 +36,11 @@ export class LoginFormComponent implements OnInit {
 
   onRoleChange(role: string) {
     this.loginForm.patchValue({ role });
+  }
+
+  // NEW: Function to flip the boolean true/false
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit() {
