@@ -1,0 +1,133 @@
+/* --- Root Layout --- */
+.admin-wrapper {
+  min-height: 100vh;
+  background-color: #f1f5f9; /* Soft slate background */
+}
+
+/* --- The Glassy Navbar --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 40px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- Logo Section --- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon { font-size: 24px; }
+.logo-text { display: flex; flex-direction: column; }
+
+.logo-text .main {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.logo-text .sub {
+  font-size: 11px;
+  color: #0d9488; /* Teal for Compliance Officer */
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* --- Navigation Links --- */
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 0;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.nav-links a.active {
+  color: #0d9488; /* Teal Active State */
+}
+
+/* The Animated Underline for Active Link */
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #0d9488; /* Teal Underline */
+  border-radius: 2px;
+}
+
+.nav-links a:hover { color: #0f172a; }
+
+/* --- User Actions & Logout --- */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 24px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.role { font-size: 13px; font-weight: 600; color: #64748b; }
+
+.status-dot {
+  width: 8px; height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.logout-btn {
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
+}
+
+.logout-btn:hover {
+  background: #ef4444; /* Turns red on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+}
+
+/* --- Main Content Area --- */
+.page-content { padding: 40px; }
+.container { max-width: 1200px; margin: 0 auto; }
