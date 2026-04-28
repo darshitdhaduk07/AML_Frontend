@@ -1,0 +1,35 @@
+<div class="admin-wrapper">
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <span class="logo-icon">🔍</span>
+        <div class="logo-text">
+          <span class="main">INVESTIGATION UNIT</span>
+          <span class="sub">Compliance Officer Portal</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a routerLink="/investigation/dashboard" routerLinkActive="active">My Cases</a>
+        <a routerLink="/investigation/alerts" routerLinkActive="active">Alert Review</a>
+        <a routerLink="/investigation/history" routerLinkActive="active">Historical Data</a>
+      </nav>
+
+      <div class="user-actions">
+        <div class="user-info">
+          <span class="role">Investigator Session</span>
+          <span class="status-dot"></span>
+        </div>
+        <button class="logout-btn" (click)="logout()">
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

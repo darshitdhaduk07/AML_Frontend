@@ -58,22 +58,51 @@ input:focus {
   color: #2563eb;
   text-decoration: none;
 }
-button {
+/* 1. Only the Submit Button gets the big blue styling now */
+.submit-btn { 
+  width: 100%; 
+  border: none; 
+  background: #0F172A; 
+  color: #fff; 
+  padding: 14px; 
+  border-radius: 14px; 
+  font-size: 15px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  margin-top: 10px; 
+}
+.submit-btn:hover:not(:disabled) { background: #111f3b; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* 2. Password Wrapper keeps the input and the toggle grouped together */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 60px; /* Makes sure the text doesn't type underneath the Show button */
+}
+
+/* 3. The Toggle Button is stripped of background and positioned absolutely inside the wrapper */
+.toggle-password-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%); /* This perfectly centers it vertically! */
+  background: transparent;
   border: none;
-  background: #0f172a;
-  color: #fff;
-  padding: 14px;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 700;
+  color: #64748B;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  padding: 0;
+  margin: 0;
 }
-button:hover:not(:disabled) {
-  background: #111f3b;
-}
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+
+.toggle-password-btn:hover {
+  color: #0F172A;
 }
