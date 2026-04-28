@@ -16,7 +16,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, payload).pipe(
       tap(response => {
         if (response && response.jwt) {
-          this.storageService.setCookie('auth_token', response.jwt);
+          this.storageService.setCookie('jwt', response.jwt);
         }
       })
     );
