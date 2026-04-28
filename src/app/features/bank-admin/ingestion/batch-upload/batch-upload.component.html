@@ -1,0 +1,40 @@
+<div class="upload-wrapper">
+  <div class="minimal-card">
+    <div class="header">
+      <h1>Batch Ingestion</h1>
+      <p>Upload transaction CSV for transaction monitoring</p>
+    </div>
+
+    @if (!selectedFile) {
+      <div class="drop-zone" (click)="fileInput.click()">
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv" hidden>
+        <span class="icon">📄</span>
+        <p>Click to select <strong>CSV</strong></p>
+      </div>
+    } @else {
+      <div class="file-preview">
+        <div class="file-info">
+          <div class="details">
+            <span class="name">{{ selectedFile.name }}</span>
+            <span class="size">{{ (selectedFile.size / 1024).toFixed(1) }} KB</span>
+          </div>
+          <button class="remove-btn" (click)="removeFile()">✕</button>
+        </div>
+      </div>
+    }
+
+    @if (uploadStatus === 'error') {
+      <div class="status-msg error">Invalid file format.</div>
+    }
+
+    @if (uploadStatus === 'success') {
+      <div class="status-msg success">Batch queued successfully.</div>
+    }
+
+    <button class="action-btn" 
+            [disabled]="!selectedFile || isUploading" 
+            (click)="triggerUpload()">
+      {{ isUploading ? 'Processing...' : 'Upload Batch' }}
+    </button>
+  </div>
+</div>
