@@ -4,15 +4,17 @@ export const routes: Routes = [
   // 1. System Admin Login (No bank name required)
   { 
     path: 'admin/login', 
-    loadComponent: () => import('./features/auth/login/sys-admin-login-page/sys-admin-login-page.component')
-      .then(m => m.SysAdminLoginPageComponent) 
+    loadComponent: () => import('./features/auth/login/login-page/login-page.component')
+      .then(m => m.LoginPageComponent),
+    data: { isSystemAdmin: true }
   },
   
   // 2. Tenant Login (Requires a bank name in the URL)
   { 
     path: ':bankName/auth/login', 
     loadComponent: () => import('./features/auth/login/login-page/login-page.component')
-      .then(m => m.LoginPageComponent) 
+      .then(m => m.LoginPageComponent),
+    data: { isSystemAdmin: false }
   },
 
   // 3. Fallback Routes

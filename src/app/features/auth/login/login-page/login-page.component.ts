@@ -12,14 +12,27 @@ import { LoginFormComponent } from '../components/login-form/login-form.componen
 })
 export class LoginPageComponent {
   @Input() bankName: string = '';
+  @Input() isSystemAdmin: boolean = false;
+
+  get effectiveBankName(): string {
+    return this.isSystemAdmin ? 'GOVERNANCE LAYER' : this.bankName;
+  }
 
   handleLogin(credentials: any) {
-    const apiPayload = {
-      tenant: this.bankName,
-      role: credentials.role,
-      email: credentials.email,
-      password: credentials.password
-    };
-    console.log('Sending Tenant Login Request:', apiPayload);
+    const apiPayload = this.isSystemAdmin 
+      ? {
+          role: 'SYSTEM_ADMIN',
+          email: credentials.email,
+          password: credentials.password
+        }
+      : {
+          tenant: this.bankName,
+          role: credentials.role,
+          email: credentials.email,
+          password: credentials.password
+        };
+    
+    const requestType = this.isSystemAdmin ? 'System Admin' : 'Tenant';
+    console.log(`Sending ${requestType} Login Request:`, apiPayload);
   }
 }
