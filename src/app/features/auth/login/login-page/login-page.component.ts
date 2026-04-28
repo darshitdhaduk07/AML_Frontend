@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthBrandingComponent } from '../components/auth-branding/auth-branding.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -13,6 +14,8 @@ import { LoginFormComponent } from '../components/login-form/login-form.componen
 export class LoginPageComponent {
   @Input() bankName: string = '';
   @Input() isSystemAdmin: boolean = false;
+
+  private authService = inject(AuthService);
 
   get effectiveBankName(): string {
     return this.isSystemAdmin ? 'GOVERNANCE LAYER' : this.bankName;
@@ -34,5 +37,14 @@ export class LoginPageComponent {
     
     const requestType = this.isSystemAdmin ? 'System Admin' : 'Tenant';
     console.log(`Sending ${requestType} Login Request:`, apiPayload);
+
+    this.authService.login(apiPayload).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+      }
+    });
   }
 }
