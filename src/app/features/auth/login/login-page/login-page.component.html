@@ -1,8 +1,11 @@
 <div class="container">
   <div class="left">
-    <app-auth-branding [bankName]="bankName"></app-auth-branding>
+    <app-auth-branding [bankName]="effectiveBankName"></app-auth-branding>
   </div>
   <div class="right">
-    <app-login-form (loginSubmit)="handleLogin($event)"></app-login-form>
+    <app-login-form 
+      [isSystemAdmin]="isSystemAdmin"
+      (loginSubmit)="handleLogin($event)">
+    </app-login-form>
   </div>
 </div>
