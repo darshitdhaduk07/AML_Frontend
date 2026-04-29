@@ -1,101 +1,115 @@
 <div class="rule-container">
-  <div class="header">
-    <div class="back-link" routerLink="/sys/dashboard">
-      <span class="material-symbols-outlined">arrow_back</span>
-      <span>BACK TO RULES</span>
+    <div class="header">
+        <div class="back-link" routerLink="/sys/dashboard">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>BACK TO RULES</span>
+        </div>
+        <h1>Add New Rule</h1>
+        <p class="subtitle">
+            Define logic-based triggers and thresholds for automated system
+            responses across your enterprise infrastructure.
+        </p>
     </div>
-    <h1>Add New Rule</h1>
-    <p class="subtitle">Define logic-based triggers and thresholds for automated system responses across your enterprise infrastructure.</p>
-  </div>
 
-  <div class="form-wrapper">
-    <!-- Configuration Basis Section -->
-    <section class="form-section">
-      <div class="section-title">
-        <div class="icon-box blue">
-          <span class="material-symbols-outlined">schema</span>
-        </div>
-        <div>
-          <h3>Configuration Basis</h3>
-          <p>Select the operational context for this new rule.</p>
-        </div>
-      </div>
+    <div class="form-wrapper">
+        <!-- Configuration Basis Section -->
+        <section class="form-section">
+            <div class="section-title">
+                <div class="icon-box blue">
+                    <span class="material-symbols-outlined">schema</span>
+                </div>
+                <div>
+                    <h3>Configuration Basis</h3>
+                    <p>Select the operational context for this new rule.</p>
+                </div>
+            </div>
 
-      <div class="input-grid">
-        <div class="field">
-          <label>Select Tenant</label>
-          <select>
-            <option disabled selected value="">Choose a tenant...</option>
-            <option value="global">Global Infrastructure</option>
-            <option value="us-east">North America - East</option>
-            <option value="eu-west">Europe - London Hub</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Select Rule Template</label>
-          <select>
-            <option disabled selected value="">Choose a template...</option>
-            <option value="latency">High Latency Alert</option>
-            <option value="resource">Resource Exhaustion</option>
-            <option value="security">Unauthorized Access Pattern</option>
-            <option value="custom">Custom Blank Template</option>
-          </select>
-        </div>
-      </div>
-    </section>
+            <div class="input-grid">
+                <div class="field">
+                    <label>Select Tenant</label>
+                    <select>
+                        <option disabled selected value="">
+                            Choose a tenant...
+                        </option>
+                        <option value="global">Global Infrastructure</option>
+                        <option value="us-east">North America - East</option>
+                        <option value="eu-west">Europe - London Hub</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Select Rule Template</label>
+                    <select>
+                        <option disabled selected value="">
+                            Choose a template...
+                        </option>
+                        <option value="latency">High Latency Alert</option>
+                        <option value="resource">Resource Exhaustion</option>
+                        <option value="security">
+                            Unauthorized Access Pattern
+                        </option>
+                        <option value="custom">Custom Blank Template</option>
+                    </select>
+                </div>
+            </div>
+        </section>
 
-    <!-- Rule Parameters Section -->
-    <section class="form-section">
-      <div class="section-title">
-        <div class="icon-box blue">
-          <span class="material-symbols-outlined">tune</span>
-        </div>
-        <div>
-          <h3>Rule Parameters</h3>
-          <p>Fine-tune the logic conditions and execution timing.</p>
-        </div>
-      </div>
+        <!-- Rule Parameters Section -->
+        <section class="form-section">
+            <div class="section-title">
+                <div class="icon-box blue">
+                    <span class="material-symbols-outlined">tune</span>
+                </div>
+                <div>
+                    <h3>Rule Parameters</h3>
+                    <p>Fine-tune the logic conditions and execution timing.</p>
+                </div>
+            </div>
 
-      <div class="field">
-        <label>Condition</label>
-        <select>
-          <option value="gt">Greater than (&gt;)</option>
-          <option value="lt">Less than (&lt;)</option>
-          <option value="eq">Equals (=)</option>
-          <option value="neq">Not Equal to (≠)</option>
-        </select>
-      </div>
+            <div class="field">
+                <label>Condition</label>
+                <select>
+                    <option value="gt">Greater than (&gt;)</option>
+                    <option value="lt">Less than (&lt;)</option>
+                    <option value="eq">Equals (=)</option>
+                    <option value="neq">Not Equal to (≠)</option>
+                </select>
+            </div>
 
-      <div class="input-grid">
-        <div class="field">
-          <label>Threshold Value</label>
-          <input type="number" placeholder="0.00">
-          <span class="hint">Numerical value to trigger the action.</span>
-        </div>
-        <div class="field">
-          <label>Action Delay</label>
-          <div class="unit-input">
-            <input type="text" placeholder="500">
-            <span class="unit">MS</span>
-          </div>
-          <span class="hint">Wait time before rule execution.</span>
-        </div>
-      </div>
-    </section>
+            <div class="input-grid">
+                <div class="field">
+                    <label>Threshold Value</label>
+                    <input type="number" placeholder="0.00" />
+                    <span class="hint"
+                        >Numerical value to trigger the action.</span
+                    >
+                </div>
+                <div class="field">
+                    <label>Action Delay</label>
+                    <div class="unit-input">
+                        <input type="text" placeholder="500" />
+                        <span class="unit">MS</span>
+                    </div>
+                    <span class="hint">Wait time before rule execution.</span>
+                </div>
+            </div>
+        </section>
 
-    <div class="footer-grid">
-      <div class="actions">
-        <button class="btn-ghost">Save as Draft</button>
-        <button class="btn-primary">Add Rule</button>
-      </div>
-      <div class="tip-card">
-        <div class="tip-header">
-          <span class="material-symbols-outlined">lightbulb</span>
-          <strong>Pro Tip</strong>
+        <div class="footer-grid">
+            <div class="actions">
+                <button class="btn-ghost">Save as Draft</button>
+                <button class="btn-primary">Add Rule</button>
+            </div>
+            <div class="tip-card">
+                <div class="tip-header">
+                    <span class="material-symbols-outlined">lightbulb</span>
+                    <strong>Pro Tip</strong>
+                </div>
+                <p>
+                    Templates pre-fill common parameters. We recommend starting
+                    with a template to ensure compliance.
+                </p>
+                <a href="#">View Documentation</a>
+            </div>
         </div>
-        <p>Templates pre-fill common parameters. We recommend starting with a template to ensure compliance.</p>
-        <a href="#">View Documentation</a>
-      </div>
     </div>
-  </div>
 </div>

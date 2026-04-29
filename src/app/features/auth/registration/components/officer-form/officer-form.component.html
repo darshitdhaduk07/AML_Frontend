@@ -1,36 +1,46 @@
 <div class="card">
-  <h2>Add Compliance Officer</h2>
-  <p class="sub">Assign officer permissions. You can select both.</p>
+    <h2>Add Compliance Officer</h2>
+    <p class="sub">Assign officer permissions. You can select both.</p>
 
-  <form [formGroup]="offForm" (ngSubmit)="onSubmit()">
-    <div class="group">
-      <label>Officer Email</label>
-      <input type="email" formControlName="email" placeholder="officer@bank.com">
-    </div>
-
-    <label>Permissions</label>
-    <div class="checkbox-container">
-      
-      <label class="option-card">
-        <input type="checkbox" formControlName="isMaker" class="hidden-check">
-        <div class="card-content">
-          <span class="role-title">Maker </span>
-          <span class="role-desc">Create/Edit records</span>
+    <form [formGroup]="offForm" (ngSubmit)="onSubmit()">
+        <div class="group">
+            <label>Officer Email</label>
+            <input
+                type="email"
+                formControlName="email"
+                placeholder="officer@bank.com"
+            />
         </div>
-      </label>
 
-      <label class="option-card">
-        <input type="checkbox" formControlName="isChecker" class="hidden-check">
-        <div class="card-content">
-          <span class="role-title">Checker </span>
-          <span class="role-desc">Review/Approve</span>
+        <label>Permissions</label>
+        <div class="checkbox-container">
+            <label class="option-card">
+                <input
+                    type="checkbox"
+                    formControlName="isMaker"
+                    class="hidden-check"
+                />
+                <div class="card-content">
+                    <span class="role-title">Maker </span>
+                    <span class="role-desc">Create/Edit records</span>
+                </div>
+            </label>
+
+            <label class="option-card">
+                <input
+                    type="checkbox"
+                    formControlName="isChecker"
+                    class="hidden-check"
+                />
+                <div class="card-content">
+                    <span class="role-title">Checker </span>
+                    <span class="role-desc">Review/Approve</span>
+                </div>
+            </label>
         </div>
-      </label>
 
-    </div>
-
-    <button type="submit" class="submit-btn" [disabled]="offForm.invalid">
-      Register Officer
-    </button>
-  </form>
+        <button type="submit" class="submit-btn" [disabled]="offForm.invalid">
+            Register Officer
+        </button>
+    </form>
 </div>

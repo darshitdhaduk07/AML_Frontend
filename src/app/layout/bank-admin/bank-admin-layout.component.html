@@ -1,76 +1,101 @@
 <div class="layout-container">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo">
-        <span class="material-symbols-outlined" style="color: white; font-size: 20px;">corporate_fare</span>
-      </div>
-      <div class="sidebar-title">
-        <h2>AML Portal</h2>
-        <p>Bank Admin</p>
-      </div>
-    </div>
-    
-    <nav class="sidebar-nav">
-      <a routerLink="/bank/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-        <span class="material-symbols-outlined">dashboard</span>
-        Alert Dashboard
-      </a>
-      
-      <a routerLink="/bank/ingestion/upload" routerLinkActive="active" class="nav-link">
-        <span class="material-symbols-outlined">upload_file</span>
-        Batch Upload
-      </a>
-      
-      <a routerLink="/bank/users" routerLinkActive="active" class="nav-link">
-        <span class="material-symbols-outlined">group</span>
-        User Management
-      </a>
-      
-      <a routerLink="/bank/cases" routerLinkActive="active" class="nav-link">
-        <span class="material-symbols-outlined">work</span>
-        Case Tracking
-      </a>
-      
-      <a routerLink="/bank/reports" routerLinkActive="active" class="nav-link">
-        <span class="material-symbols-outlined">assessment</span>
-        Reports
-      </a>
-    </nav>
-    
-    <div class="sidebar-footer">
-      <button class="footer-btn">
-        <span class="material-symbols-outlined">settings</span>
-        Settings
-      </button>
-      <button (click)="logout()" class="footer-btn logout">
-        <span class="material-symbols-outlined">logout</span>
-        Logout
-      </button>
-    </div>
-  </aside>
-
-  <header class="main-header">
-    <div class="header-search">
-      <span class="material-symbols-outlined">search</span>
-      <input placeholder="Search..." type="text"/>
-    </div>
-    
-    <div class="header-actions">
-      <button class="icon-btn">
-        <span class="material-symbols-outlined">notifications</span>
-      </button>
-      <div class="header-divider"></div>
-      <div class="user-profile">
-        <div class="user-details">
-          <p class="name">Bank Admin</p>
-          <p class="role">Session Active</p>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <span
+                    class="material-symbols-outlined"
+                    style="color: white; font-size: 20px"
+                    >corporate_fare</span
+                >
+            </div>
+            <div class="sidebar-title">
+                <h2>AML Portal</h2>
+                <p>Bank Admin</p>
+            </div>
         </div>
-        <div class="user-avatar">BA</div>
-      </div>
-    </div>
-  </header>
 
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
+        <nav class="sidebar-nav">
+            <a
+                routerLink="/bank/dashboard"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-link"
+            >
+                <span class="material-symbols-outlined">dashboard</span>
+                Alert Dashboard
+            </a>
+
+            <a
+                routerLink="/bank/ingestion/upload"
+                routerLinkActive="active"
+                class="nav-link"
+            >
+                <span class="material-symbols-outlined">upload_file</span>
+                Batch Upload
+            </a>
+
+            <a
+                routerLink="/bank/users"
+                routerLinkActive="active"
+                class="nav-link"
+            >
+                <span class="material-symbols-outlined">group</span>
+                User Management
+            </a>
+
+            <a
+                routerLink="/bank/cases"
+                routerLinkActive="active"
+                class="nav-link"
+            >
+                <span class="material-symbols-outlined">work</span>
+                Case Tracking
+            </a>
+
+            <a
+                routerLink="/bank/reports"
+                routerLinkActive="active"
+                class="nav-link"
+            >
+                <span class="material-symbols-outlined">assessment</span>
+                Reports
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="footer-btn">
+                <span class="material-symbols-outlined">settings</span>
+                Settings
+            </button>
+            <button (click)="logout()" class="footer-btn logout">
+                <span class="material-symbols-outlined">logout</span>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-search">
+            <span class="material-symbols-outlined">search</span>
+            <input placeholder="Search..." type="text" />
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <div class="header-divider"></div>
+            <div class="user-profile">
+                <div class="user-details">
+                    <p class="name">Bank Admin</p>
+                    <p class="role">Session Active</p>
+                </div>
+                <div class="user-avatar">BA</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
 </div>

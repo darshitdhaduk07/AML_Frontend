@@ -1,50 +1,50 @@
 <div class="card">
-  <h2>{{ isSystemAdmin ? "System Admin Login" : "Sign in" }}</h2>
-  <div class="sub">Access the AML Compliance control center.</div>
+    <h2>{{ isSystemAdmin ? "System Admin Login" : "Sign in" }}</h2>
+    <div class="sub">Access the AML Compliance control center.</div>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    @if (!isSystemAdmin) {
-      <app-role-toggle
-        [selectedRole]="loginForm.get('role')?.value"
-        (roleChange)="onRoleChange($event)"
-      >
-      </app-role-toggle>
-    }
-    <div class="group">
-      <label>Email</label>
-      <input
-        type="email"
-        formControlName="email"
-        placeholder="name@company.com"
-      />
-    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        @if (!isSystemAdmin) {
+            <app-role-toggle
+                [selectedRole]="loginForm.get('role')?.value"
+                (roleChange)="onRoleChange($event)"
+            >
+            </app-role-toggle>
+        }
+        <div class="group">
+            <label>Email</label>
+            <input
+                type="email"
+                formControlName="email"
+                placeholder="name@company.com"
+            />
+        </div>
 
-    <div class="group">
-      <div class="row">
-        <label>Password</label>
-        <a href="#" class="link">Forgot?</a>
-      </div>
+        <div class="group">
+            <div class="row">
+                <label>Password</label>
+                <a href="#" class="link">Forgot?</a>
+            </div>
 
-      <div class="password-wrapper">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          formControlName="password"
-          placeholder="Enter password"
-        />
-        <button
-          type="button"
-          class="toggle-password-btn"
-          (click)="togglePasswordVisibility()"
-        >
-          {{ showPassword ? "Hide" : "Show" }}
+            <div class="password-wrapper">
+                <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    placeholder="Enter password"
+                />
+                <button
+                    type="button"
+                    class="toggle-password-btn"
+                    (click)="togglePasswordVisibility()"
+                >
+                    {{ showPassword ? "Hide" : "Show" }}
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+            Secure Login
         </button>
-      </div>
-    </div>
+    </form>
 
-    <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
-      Secure Login
-    </button>
-  </form>
-
-  <app-auth-footer></app-auth-footer>
+    <app-auth-footer></app-auth-footer>
 </div>

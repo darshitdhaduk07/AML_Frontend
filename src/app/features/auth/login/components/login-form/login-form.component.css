@@ -1,108 +1,113 @@
 :host {
-  display: block;
-  width: 100%;
-  max-width: 480px; /* Increased from 430px */
+    display: block;
+    width: 100%;
+    max-width: 480px; /* Increased from 430px */
 }
 
 .card {
-  width: 100%;
-  max-width: 480px; /* Increased from 430px */
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 22px;
-  padding: 40px; /* Optional: Slightly increased padding to balance the wider form */
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    width: 100%;
+    max-width: 480px; /* Increased from 430px */
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    padding: 40px; /* Optional: Slightly increased padding to balance the wider form */
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
 }
 
 /* Leave the rest of your CSS below here exactly as it was! */
 h2 {
-  font-size: 34px;
-  margin-bottom: 8px;
+    font-size: 34px;
+    margin-bottom: 8px;
 }
 .sub {
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 28px;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 28px;
 }
 /* ... */
 .group {
-  margin-bottom: 18px;
+    margin-bottom: 18px;
 }
 label {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  color: #334155;
-  margin-bottom: 8px;
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 8px;
 }
 input {
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  font-size: 15px;
-  outline: none;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
 }
 input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .link {
-  font-size: 13px;
-  color: #2563eb;
-  text-decoration: none;
+    font-size: 13px;
+    color: #2563eb;
+    text-decoration: none;
 }
 /* 1. Only the Submit Button gets the big blue styling now */
-.submit-btn { 
-  width: 100%; 
-  border: none; 
-  background: #0F172A; 
-  color: #fff; 
-  padding: 14px; 
-  border-radius: 14px; 
-  font-size: 15px; 
-  font-weight: 700; 
-  cursor: pointer; 
-  margin-top: 10px; 
+.submit-btn {
+    width: 100%;
+    border: none;
+    background: #0f172a;
+    color: #fff;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
 }
-.submit-btn:hover:not(:disabled) { background: #111f3b; }
-.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.submit-btn:hover:not(:disabled) {
+    background: #111f3b;
+}
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
 /* 2. Password Wrapper keeps the input and the toggle grouped together */
 .password-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .password-wrapper input {
-  width: 100%;
-  padding-right: 60px; /* Makes sure the text doesn't type underneath the Show button */
+    width: 100%;
+    padding-right: 60px; /* Makes sure the text doesn't type underneath the Show button */
 }
 
 /* 3. The Toggle Button is stripped of background and positioned absolutely inside the wrapper */
 .toggle-password-btn {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%); /* This perfectly centers it vertically! */
-  background: transparent;
-  border: none;
-  color: #64748B;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%); /* This perfectly centers it vertically! */
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
 }
 
 .toggle-password-btn:hover {
-  color: #0F172A;
+    color: #0f172a;
 }

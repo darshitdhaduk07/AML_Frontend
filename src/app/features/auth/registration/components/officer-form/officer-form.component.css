@@ -1,41 +1,86 @@
 .card {
-  width: 500px;
-  padding: 40px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  border: 1px solid #e2e8f0;
+    width: 500px;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
 }
 
-h2 { margin: 0 0 8px 0; color: #0f172a; font-size: 24px; }
-.sub { color: #64748b; font-size: 14px; margin-bottom: 30px; }
+h2 {
+    margin: 0 0 8px 0;
+    color: #0f172a;
+    font-size: 24px;
+}
+.sub {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
 
-.group { margin-bottom: 20px; }
-label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 8px; }
+.group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+}
 
 input {
-  width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;
-  background: #f8fafc; box-sizing: border-box; font-size: 14px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 .checkbox-group {
-  display: flex; gap: 15px; margin-top: 10px; margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 25px;
 }
 
 .check-item {
-  flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px;
-  border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; background: #f8fafc;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #f8fafc;
 }
 
 .check-item:has(input:checked) {
-  border-color: #3b82f6; background: #eff6ff;
+    border-color: #3b82f6;
+    background: #eff6ff;
 }
 
-.check-label { margin-bottom: 0; cursor: pointer; font-weight: 500; }
+.check-label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: 500;
+}
 
 .submit-btn {
-  width: 100%; padding: 14px; background: #0f172a; color: white;
-  border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
+    width: 100%;
+    padding: 14px;
+    background: #0f172a;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

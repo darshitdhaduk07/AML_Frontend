@@ -1,15 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* 3. Apply the new font and base colors to the whole app */
-body { 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-  background: #F8FAFC; 
-  color: #111827; 
-  -webkit-font-smoothing: antialiased; /* Makes the font look crisper */
+body {
+    font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        sans-serif;
+    background: #f8fafc;
+    color: #111827;
+    -webkit-font-smoothing: antialiased; /* Makes the font look crisper */
 }

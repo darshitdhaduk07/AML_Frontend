@@ -8,21 +8,21 @@ import { map, of } from 'rxjs';
  * Now includes server-side verification.
  */
 export const authGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+    const authService = inject(AuthService);
+    const router = inject(Router);
 
-  if (!authService.isAuthenticated()) {
-    return of(router.parseUrl('/admin/login'));
-  }
+    if (!authService.isAuthenticated()) {
+        return of(router.parseUrl('/admin/login'));
+    }
 
-  return authService.verifyToken().pipe(
-    map(isValid => {
-      if (isValid) {
-        return true;
-      }
-      
-      // If token is invalid (expired/malicious), verifyToken() already called logout()
-      return router.parseUrl('/admin/login');
-    })
-  );
+    return authService.verifyToken().pipe(
+        map((isValid) => {
+            if (isValid) {
+                return true;
+            }
+
+            // If token is invalid (expired/malicious), verifyToken() already called logout()
+            return router.parseUrl('/admin/login');
+        }),
+    );
 };

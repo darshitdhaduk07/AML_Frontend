@@ -1,103 +1,122 @@
 /* --- Container & Card --- */
 .card {
-  width: 550px; /* Professional Admin Width */
-  padding: 40px;
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  border: 1px solid #E2E8F0;
-  box-sizing: border-box;
+    width: 550px; /* Professional Admin Width */
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    box-sizing: border-box;
 }
 
-h2 { font-size: 24px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0; }
-.sub { font-size: 14px; color: #64748B; margin-bottom: 32px; }
+h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px 0;
+}
+.sub {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 32px;
+}
 
 /* --- Forms & Inputs --- */
-.group { margin-bottom: 20px; width: 100%; text-align: left; }
-label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 8px; }
+.group {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+}
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+}
 
 input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #E2E8F0;
-  border-radius: 12px;
-  font-size: 14px;
-  background: #F8FAFC;
-  transition: all 0.2s;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    background: #f8fafc;
+    transition: all 0.2s;
+    box-sizing: border-box;
 }
 
 input:focus {
-  outline: none;
-  border-color: #3B82F6;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 /* --- Maker/Checker Multi-Select Cards --- */
 .checkbox-container {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
 .option-card {
-  flex: 1;
-  padding: 16px;
-  border: 2px solid #E2E8F0;
-  border-radius: 16px;
-  cursor: pointer;
-  background: #F8FAFC;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+    flex: 1;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 /* Hide the native checkbox */
 .hidden-check {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
 /* Styling for the card when the hidden input is checked */
 .option-card:has(.hidden-check:checked) {
-  border-color: #3B82F6;
-  background-color: #EFF6FF;
+    border-color: #3b82f6;
+    background-color: #eff6ff;
 }
 
 .role-title {
-  font-weight: 700;
-  font-size: 15px;
-  color: #0F172A;
+    font-weight: 700;
+    font-size: 15px;
+    color: #0f172a;
 }
 
 .role-desc {
-  font-size: 12px;
-  color: #64748B;
-  margin-top: 4px;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
 }
 
 /* --- Buttons --- */
 .submit-btn {
-  width: 100%;
-  padding: 14px;
-  background: #0F172A;
-  color: #ffffff;
-  border: none;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
+    width: 100%;
+    padding: 14px;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #1e293b;
+    background: #1e293b;
 }
 
 .submit-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
