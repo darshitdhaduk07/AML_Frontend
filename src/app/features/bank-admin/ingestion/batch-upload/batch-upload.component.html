@@ -1,40 +1,106 @@
-<div class="upload-wrapper">
-  <div class="minimal-card">
-    <div class="header">
-      <h1>Batch Ingestion</h1>
-      <p>Upload transaction CSV for transaction monitoring</p>
-    </div>
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <a routerLink="/bank/dashboard" class="back-link">
+      <span class="material-symbols-outlined" style="font-size: 14px;">arrow_back</span>
+      Back to Dashboard
+    </a>
+    <h1 class="page-title">Batch Data Ingestion</h1>
+    <p class="page-subtitle">Upload customer or transaction records in CSV format for automated processing and monitoring.</p>
+  </div>
 
-    @if (!selectedFile) {
-      <div class="drop-zone" (click)="fileInput.click()">
-        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv" hidden>
-        <span class="icon">📄</span>
-        <p>Click to select <strong>CSV</strong></p>
-      </div>
-    } @else {
-      <div class="file-preview">
-        <div class="file-info">
-          <div class="details">
-            <span class="name">{{ selectedFile.name }}</span>
-            <span class="size">{{ (selectedFile.size / 1024).toFixed(1) }} KB</span>
-          </div>
-          <button class="remove-btn" (click)="removeFile()">✕</button>
+  <!-- Form Content -->
+  <div class="form-container">
+    <!-- Configuration Section -->
+    <section class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <span class="material-symbols-outlined">database</span>
+        </div>
+        <div class="section-title">
+          <h3>Ingestion Type</h3>
+          <p>Select what kind of records you are uploading today.</p>
         </div>
       </div>
-    }
 
-    @if (uploadStatus === 'error') {
-      <div class="status-msg error">Invalid file format.</div>
-    }
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Select File Type</label>
+          <div class="select-wrapper">
+            <select [(ngModel)]="selectedType" class="form-select">
+              <option value="" disabled selected>Choose a category...</option>
+              <option value="customers">Customers</option>
+              <option value="transactions">Transactions</option>
+            </select>
+            <span class="material-symbols-outlined select-icon">expand_more</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    @if (uploadStatus === 'success') {
-      <div class="status-msg success">Batch queued successfully.</div>
-    }
+    <!-- Upload Section -->
+    <section class="form-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <span class="material-symbols-outlined">upload_file</span>
+        </div>
+        <div class="section-title">
+          <h3>File Upload</h3>
+          <p>Only CSV files are supported for batch ingestion.</p>
+        </div>
+      </div>
 
-    <button class="action-btn" 
-            [disabled]="!selectedFile || isUploading" 
-            (click)="triggerUpload()">
-      {{ isUploading ? 'Processing...' : 'Upload Batch' }}
-    </button>
+      <div class="upload-container">
+        @if (!selectedFile) {
+          <div (click)="fileInput.click()" class="drop-zone">
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv" style="display: none;">
+            <div class="upload-icon-box">
+              <span class="material-symbols-outlined" style="font-size: 24px;">cloud_upload</span>
+            </div>
+            <p class="upload-text">Click to upload or drag and drop</p>
+            <p class="upload-hint">CSV files only (max. 10MB)</p>
+          </div>
+        } @else {
+          <div class="file-preview">
+            <div class="file-info">
+              <div class="file-icon">
+                <span class="material-symbols-outlined">description</span>
+              </div>
+              <div class="file-details">
+                <p class="file-name">{{ selectedFile.name }}</p>
+                <p class="file-size">{{ (selectedFile.size / 1024).toFixed(1) }} KB</p>
+              </div>
+            </div>
+            <button (click)="removeFile()" class="remove-btn">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        }
+
+        <div class="action-footer">
+          <button 
+            (click)="triggerUpload()"
+            [disabled]="!selectedFile || !selectedType || isUploading"
+            class="submit-btn">
+            @if (isUploading) {
+              <span class="material-symbols-outlined animate-spin">sync</span>
+              Processing...
+            } @else {
+              <span class="material-symbols-outlined">publish</span>
+              Upload Batch
+            }
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Help Tip -->
+    <div class="help-box">
+      <span class="material-symbols-outlined help-icon">lightbulb</span>
+      <div class="help-content">
+        <p class="title">Pro Tip</p>
+        <p class="text">Ensure your CSV headers match the required system format. You can download the template from the documentation page.</p>
+      </div>
+    </div>
   </div>
 </div>

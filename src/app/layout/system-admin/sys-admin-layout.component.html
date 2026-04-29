@@ -1,37 +1,71 @@
-<div class="admin-wrapper">
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <span class="logo-icon">🛡️</span>
-        <div class="logo-text">
-          <span class="main">AML PLATFORM</span>
-          <span class="sub">System Governance</span>
-        </div>
+<div class="layout-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="material-symbols-outlined" style="color: white; font-size: 20px;">shield</span>
       </div>
+      <div class="sidebar-title">
+        <h2>AML Platform</h2>
+        <p>System Governance</p>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="/sys/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+        <span class="material-symbols-outlined">dashboard</span>
+        Dashboard
+      </a>
+      
+      <a routerLink="/sys/rule-engine" routerLinkActive="active" class="nav-link">
+        <span class="material-symbols-outlined">settings_input_component</span>
+        Rule Engine
+      </a>
+      
+      <a routerLink="/sys/bank-registry" routerLinkActive="active" class="nav-link">
+        <span class="material-symbols-outlined">account_balance</span>
+        Bank Onboarding
+      </a>
+      
+      <a routerLink="/sys/reports" routerLinkActive="active" class="nav-link">
+        <span class="material-symbols-outlined">public</span>
+        Global Reports
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button class="footer-btn">
+        <span class="material-symbols-outlined">settings</span>
+        Settings
+      </button>
+      <button (click)="logout()" class="footer-btn logout">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </aside>
 
-      <nav class="nav-links">
-        <a routerLink="/sys/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/sys/rule-engine" routerLinkActive="active">Rule Engine</a>
-        <a routerLink="/sys/bank-registry" routerLinkActive="active">Bank Onboarding</a>
-        <a routerLink="/sys/reports" routerLinkActive="active">Global Reports</a>
-      </nav>
-
-      <div class="user-actions">
-        <div class="user-info">
-          <span class="role">Admin Session</span>
-          <span class="status-dot"></span>
+  <header class="main-header">
+    <div class="header-search">
+      <span class="material-symbols-outlined">search</span>
+      <input placeholder="Search resources..." type="text"/>
+    </div>
+    
+    <div class="header-actions">
+      <button class="icon-btn">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <div class="header-divider"></div>
+      <div class="user-profile">
+        <div class="user-details">
+          <p class="name">System Admin</p>
+          <p class="role">Administrator</p>
         </div>
-        <button class="logout-btn" (click)="logout()">
-          <span>Logout</span>
-          <i class="icon-exit"></i>
-        </button>
+        <div class="user-avatar">SA</div>
       </div>
     </div>
   </header>
 
-  <main class="page-content">
-    <div class="container">
-      <router-outlet></router-outlet>
-    </div>
+  <main class="main-content">
+    <router-outlet></router-outlet>
   </main>
 </div>

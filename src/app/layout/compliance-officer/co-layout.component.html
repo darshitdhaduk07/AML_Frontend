@@ -1,35 +1,66 @@
-<div class="admin-wrapper">
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <span class="logo-icon">🔍</span>
-        <div class="logo-text">
-          <span class="main">INVESTIGATION UNIT</span>
-          <span class="sub">Compliance Officer Portal</span>
-        </div>
+<div class="layout-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="material-symbols-outlined" style="color: white; font-size: 20px;">search</span>
       </div>
+      <div class="sidebar-title">
+        <h2>Investigation</h2>
+        <p>Compliance Officer</p>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="/investigation/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+        <span class="material-symbols-outlined">work</span>
+        My Cases
+      </a>
+      
+      <a routerLink="/investigation/alerts" routerLinkActive="active" class="nav-link">
+        <span class="material-symbols-outlined">notification_important</span>
+        Alert Review
+      </a>
+      
+      <a routerLink="/investigation/history" routerLinkActive="active" class="nav-link">
+        <span class="material-symbols-outlined">history</span>
+        Historical Data
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button class="footer-btn">
+        <span class="material-symbols-outlined">settings</span>
+        Settings
+      </button>
+      <button (click)="logout()" class="footer-btn logout">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </aside>
 
-      <nav class="nav-links">
-        <a routerLink="/investigation/dashboard" routerLinkActive="active">My Cases</a>
-        <a routerLink="/investigation/alerts" routerLinkActive="active">Alert Review</a>
-        <a routerLink="/investigation/history" routerLinkActive="active">Historical Data</a>
-      </nav>
-
-      <div class="user-actions">
-        <div class="user-info">
-          <span class="role">Investigator Session</span>
-          <span class="status-dot"></span>
+  <header class="main-header">
+    <div class="header-search">
+      <span class="material-symbols-outlined">search</span>
+      <input placeholder="Search cases..." type="text"/>
+    </div>
+    
+    <div class="header-actions">
+      <button class="icon-btn">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <div class="header-divider"></div>
+      <div class="user-profile">
+        <div class="user-details">
+          <p class="name">Compliance Officer</p>
+          <p class="role">Investigator</p>
         </div>
-        <button class="logout-btn" (click)="logout()">
-          <span>Logout</span>
-        </button>
+        <div class="user-avatar">CO</div>
       </div>
     </div>
   </header>
 
-  <main class="page-content">
-    <div class="container">
-      <router-outlet></router-outlet>
-    </div>
+  <main class="main-content">
+    <router-outlet></router-outlet>
   </main>
 </div>
