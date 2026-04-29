@@ -1,36 +1,48 @@
-<div class="admin-wrapper">
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <span class="logo-icon">🛡️</span>
-        <div class="logo-text">
-          <span class="main">AML PLATFORM</span>
-          <span class="sub">System Governance</span>
-        </div>
-      </div>
-
-      <nav class="nav-links">
-        <a routerLink="/sys/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/sys/rule-engine" routerLinkActive="active">Rule Engine</a>
-        <a routerLink="/sys/bank-registry" routerLinkActive="active">Bank Onboarding</a>
-        <a routerLink="/sys/reports" routerLinkActive="active">Global Reports</a>
-      </nav>
-
-      <div class="user-actions">
-        <div class="user-info">
-          <span class="role">Admin Session</span>
-          <span class="status-dot"></span>
-        </div>
-        <button class="logout-btn" (click)="logout()">
-          <span>Logout</span>
-          <i class="icon-exit"></i>
-        </button>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">🛡️</span>
+      <div class="logo-text">
+        <span class="main">AML PLATFORM</span>
+        <span class="sub">System Governance</span>
       </div>
     </div>
-  </header>
 
-  <main class="page-content">
-    <div class="container">
+    <nav class="sidebar-nav">
+      <a routerLink="/sys/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">dashboard</span>
+        Dashboard
+      </a>
+      <a routerLink="/sys/rule-engine" routerLinkActive="active">
+        <span class="material-symbols-outlined">settings_input_component</span>
+        Rule Engine
+      </a>
+      <a routerLink="/sys/bank-registry" routerLinkActive="active">
+        <span class="material-symbols-outlined">account_balance</span>
+        Bank Onboarding
+      </a>
+      <a routerLink="/sys/reports" routerLinkActive="active">
+        <span class="material-symbols-outlined">history</span>
+        Audit Logs
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <header class="top-bar">
+      <div class="user-profile">
+        <span class="user-name">{{adminName}}</span>
+        <span class="user-role">System Admin</span>
+      </div>
+    </header>
+    <div class="page-container">
       <router-outlet></router-outlet>
     </div>
   </main>

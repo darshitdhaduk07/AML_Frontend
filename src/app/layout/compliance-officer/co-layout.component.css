@@ -1,133 +1,105 @@
-/* --- Root Layout --- */
-.admin-wrapper {
+.co-layout {
+  display: flex;
   min-height: 100vh;
-  background-color: #f1f5f9; /* Soft slate background */
 }
 
-/* --- The Glassy Navbar --- */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #e2e8f0;
-  padding: 0 40px;
-  height: 80px;
+.sidebar {
+  width: 260px;
+  background-color: #0F172A;
+  color: white;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
 }
 
-.nav-container {
-  max-width: 1400px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* --- Logo Section --- */
-.brand {
+.sidebar-header {
+  padding: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
+  border-bottom: 1px solid #1e293b;
 }
 
 .logo-icon { font-size: 24px; }
-.logo-text { display: flex; flex-direction: column; }
+.logo-text .main { display: block; font-weight: bold; font-size: 14px; }
+.logo-text .sub { font-size: 10px; color: #3b82f6; text-transform: uppercase; }
 
-.logo-text .main {
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: #0f172a;
-  font-size: 18px;
+.sidebar-nav {
+  padding: 16px 0;
+  flex: 1;
 }
 
-.logo-text .sub {
-  font-size: 11px;
-  color: #0d9488; /* Teal for Compliance Officer */
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-/* --- Navigation Links --- */
-.nav-links {
+.sidebar-nav a {
   display: flex;
-  gap: 32px;
-}
-
-.nav-links a {
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #94a3b8;
   text-decoration: none;
-  color: #64748b;
-  font-weight: 600;
   font-size: 14px;
-  padding: 8px 0;
-  transition: all 0.3s;
-  position: relative;
+  transition: all 0.2s;
 }
 
-.nav-links a.active {
-  color: #0d9488; /* Teal Active State */
+.sidebar-nav a:hover {
+  background-color: #1e293b;
+  color: white;
 }
 
-/* The Animated Underline for Active Link */
-.nav-links a.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #0d9488; /* Teal Underline */
-  border-radius: 2px;
+.sidebar-nav a.active {
+  background-color: #2563EB;
+  color: white;
 }
 
-.nav-links a:hover { color: #0f172a; }
-
-/* --- User Actions & Logout --- */
-.user-actions {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-right: 24px;
-  border-right: 1px solid #e2e8f0;
-}
-
-.role { font-size: 13px; font-weight: 600; color: #64748b; }
-
-.status-dot {
-  width: 8px; height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid #1e293b;
 }
 
 .logout-btn {
-  background: #0f172a;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 13px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
 }
 
 .logout-btn:hover {
-  background: #ef4444; /* Turns red on hover */
-  transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
 }
 
-/* --- Main Content Area --- */
-.page-content { padding: 40px; }
-.container { max-width: 1200px; margin: 0 auto; }
+.content-area {
+  flex: 1;
+  margin-left: 260px;
+  background-color: #F8FAFC;
+}
+
+.top-bar {
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.user-name { font-weight: bold; font-size: 13px; }
+.user-role { font-size: 11px; color: #64748b; }
+
+.page-container {
+  padding: 24px;
+}

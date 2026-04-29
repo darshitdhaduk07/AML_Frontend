@@ -23,6 +23,6 @@ export class SystemAdminLayoutComponent {
   logout() {
     console.log('Logging out System Admin and clearing secure session...');
     // In a real app, you would call your AuthService.logout() here 
-    this.router.navigate(['/auth/sys-login']);
+    this.router.navigate(['/admin/login']);
   }
 }

@@ -17,6 +17,6 @@ export class ComplianceOfficerLayoutComponent {
    */
   logout() {
     console.log('Recording audit event: Compliance Officer session terminated.'); // [cite: 266]
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/admin/login']);
   }
 }

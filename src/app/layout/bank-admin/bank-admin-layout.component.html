@@ -1,34 +1,54 @@
-<div class="bank-wrapper">
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <div class="logo-text">
-          <span class="main">{{"a"}} PORTAL</span>
-          <span class="sub">Compliance Administration</span>
-        </div>
-      </div>
-
-      <nav class="nav-links">
-        <a routerLink="/bank/dashboard" routerLinkActive="active">Alert Dashboard</a>
-        <a routerLink="/bank/ingestion" routerLinkActive="active">Batch Upload</a>
-        <a routerLink="/bank/users" routerLinkActive="active">User Management</a>
-        <a routerLink="/bank/cases" routerLinkActive="active">Case Tracking</a>
-        <a routerLink="/bank/reports" routerLinkActive="active">Reports</a>
-      </nav>
-
-      <div class="user-actions">
-         <div class="user-info">
-          <span class="role">Bank Admin Session</span>
-          <span class="status-dot"></span>
-        </div>
-        <button class="logout-btn" (click)="logout()">Logout</button>
+<div class="bank-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">🏦</span>
+      <div class="logo-text">
+        <span class="main">BANK PORTAL</span>
+        <span class="sub">Institutional Console</span>
       </div>
     </div>
-  </header>
 
-  <main class="page-content">
-    <div class="container">
+    <nav class="sidebar-nav">
+      <a routerLink="/bank/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">dashboard</span>
+        Alert Dashboard
+      </a>
+      <a routerLink="/bank/ingestion/upload" routerLinkActive="active">
+        <span class="material-symbols-outlined">upload_file</span>
+        Batch Upload
+      </a>
+      <!-- Links for routes that will be added later -->
+      <a routerLink="/bank/users" routerLinkActive="active">
+        <span class="material-symbols-outlined">group</span>
+        User Management
+      </a>
+      <a routerLink="/bank/cases" routerLinkActive="active">
+        <span class="material-symbols-outlined">work</span>
+        Case Tracking
+      </a>
+      <a routerLink="/bank/reports" routerLinkActive="active">
+        <span class="material-symbols-outlined">description</span>
+        Reports
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <header class="top-bar">
+      <div class="user-profile">
+        <span class="user-name">Bank Admin</span>
+        <span class="user-role">Compliance Officer</span>
+      </div>
+    </header>
+    <div class="page-container">
       <router-outlet></router-outlet>
     </div>
   </main>
-</div> 
+</div>

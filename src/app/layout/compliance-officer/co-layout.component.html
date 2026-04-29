@@ -1,34 +1,44 @@
-<div class="admin-wrapper">
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <span class="logo-icon">🔍</span>
-        <div class="logo-text">
-          <span class="main">INVESTIGATION UNIT</span>
-          <span class="sub">Compliance Officer Portal</span>
-        </div>
-      </div>
-
-      <nav class="nav-links">
-        <a routerLink="/investigation/dashboard" routerLinkActive="active">My Cases</a>
-        <a routerLink="/investigation/alerts" routerLinkActive="active">Alert Review</a>
-        <a routerLink="/investigation/history" routerLinkActive="active">Historical Data</a>
-      </nav>
-
-      <div class="user-actions">
-        <div class="user-info">
-          <span class="role">Investigator Session</span>
-          <span class="status-dot"></span>
-        </div>
-        <button class="logout-btn" (click)="logout()">
-          <span>Logout</span>
-        </button>
+<div class="co-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">🔍</span>
+      <div class="logo-text">
+        <span class="main">INVESTIGATE</span>
+        <span class="sub">Officer Portal</span>
       </div>
     </div>
-  </header>
 
-  <main class="page-content">
-    <div class="container">
+    <nav class="sidebar-nav">
+      <a routerLink="/co/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">work</span>
+        My Cases
+      </a>
+      <a routerLink="/co/alerts" routerLinkActive="active">
+        <span class="material-symbols-outlined">warning</span>
+        Alert Review
+      </a>
+      <a routerLink="/co/history" routerLinkActive="active">
+        <span class="material-symbols-outlined">history</span>
+        Historical Data
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <header class="top-bar">
+      <div class="user-profile">
+        <span class="user-name">Investigator</span>
+        <span class="user-role">Compliance Officer</span>
+      </div>
+    </header>
+    <div class="page-container">
       <router-outlet></router-outlet>
     </div>
   </main>

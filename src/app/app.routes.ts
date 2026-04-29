@@ -26,6 +26,7 @@ export const routes: Routes = [
     data: { expectedRoles: ['SYSTEM_ADMIN'] },
     children: [
       { path: 'dashboard', loadComponent: () => import('./features/system-admin/dashboard/dashboard.component').then(m => m.SystemAdminDashboardComponent) },
+      { path: 'rule-engine', loadComponent: () => import('./features/system-admin/rule-engine/rule-registration/rule-registration.component').then(m => m.RuleRegistrationComponent) },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

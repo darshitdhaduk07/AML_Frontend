@@ -17,6 +17,6 @@ export class BankAdminLayoutComponent {
    */
   logout() {
     console.log('Recording audit event: Bank Admin manual logout.'); // [cite: 266]
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/admin/login']);
   }
 }
