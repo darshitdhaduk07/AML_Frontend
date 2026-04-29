@@ -1,0 +1,18 @@
+Use the provided Theme for colors:
+
+Primary: #0F172A
+Accent: #2563EB
+Background: #F8FAFC
+Surface: #FFFFFF
+Text: #111827
+Danger: #DC2626
+Warning: #F59E0B
+Success: #16A34A
+
+always keep the same side bar for all pages design Respective to role, all the html design pages are linked inside the neighbour pages directory
+
+no navbar is needed anymore, but the pages linked in navbar is still relevant and should be transferred to side bar
+
+take the context of how side bar should look from rule register.html page inside pages.
+
+when i tell you to convert the html pages to angular pages do not just copy paste, try to modularize components but don't go too much extreme.
