@@ -3,14 +3,13 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/rou
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-sys-admin-layout',
+  selector: 'app-system-admin-layout',
   standalone: true,
-  // Ensure we import RouterLink and RouterLinkActive for the Navbar to work
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './sys-admin-layout.component.html',
   styleUrls: ['./sys-admin-layout.component.css']
 })
-export class SysAdminLayoutComponent {
+export class SystemAdminLayoutComponent {
   
   // This mirrors the "Administration Layer" requirement from the SRS [cite: 48]
   adminName: string = 'System Super Admin';

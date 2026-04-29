@@ -1,5 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthBrandingComponent } from '../components/auth-branding/auth-branding.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -16,6 +17,7 @@ export class LoginPageComponent {
   @Input() isSystemAdmin: boolean = false;
 
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   get effectiveBankName(): string {
     return this.isSystemAdmin ? 'GOVERNANCE LAYER' : this.bankName;
@@ -35,16 +37,30 @@ export class LoginPageComponent {
           password: credentials.password
         };
     
-    const requestType = this.isSystemAdmin ? 'System Admin' : 'Tenant';
-    console.log(`Sending ${requestType} Login Request:`, apiPayload);
-
     this.authService.login(apiPayload).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
+      next: () => {
+        const role = this.authService.getUserRole();
+        this.redirectByRole(role);
       },
       error: (error) => {
         console.error('Login failed', error);
       }
     });
+  }
+
+  private redirectByRole(role: string | null) {
+    switch (role) {
+      case 'SYSTEM_ADMIN':
+        this.router.navigate(['/sys/dashboard']);
+        break;
+      case 'BANK_ADMIN':
+        this.router.navigate(['/bank/dashboard']);
+        break;
+      case 'COMPLIANCE_OFFICER':
+        this.router.navigate(['/co/dashboard']);
+        break;
+      default:
+        this.router.navigate(['/admin/login']);
+    }
   }
 }

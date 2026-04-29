@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-co-layout',
+  selector: 'app-compliance-officer-layout',
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './co-layout.component.html',
   styleUrls: ['./co-layout.component.css']
 })
-export class CoLayoutComponent {
+export class ComplianceOfficerLayoutComponent {
   constructor(private router: Router) {}
 
   /**
