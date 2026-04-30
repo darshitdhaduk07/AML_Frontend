@@ -1,0 +1,64 @@
+<div class="existing-rules-container">
+    <div class="section-header">
+        <div class="icon-box purple">
+            <span class="material-symbols-outlined">account_tree</span>
+        </div>
+        <div>
+            <h3>Tenant Rules Registry</h3>
+            <p>Browse and manage rules configured across all enterprise tenants.</p>
+        </div>
+    </div>
+
+    <div class="tenants-list">
+        <div *ngFor="let tenant of tenants" class="tenant-item" [class.expanded]="isExpanded(tenant.tenantName)">
+            <div class="tenant-header" (click)="toggleTenant(tenant.tenantName)">
+                <div class="tenant-info">
+                    <span class="material-symbols-outlined tenant-icon">corporate_fare</span>
+                    <div class="tenant-details">
+                        <span class="tenant-name">{{ tenant.tenantName }}</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <span class="rules-count" *ngIf="tenantRules.has(tenant.tenantName)">
+                        {{ getRules(tenant.tenantName).length }} Rules
+                    </span>
+                    <span class="material-symbols-outlined toggle-icon">
+                        {{ isExpanded(tenant.tenantName) ? 'expand_less' : 'expand_more' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="rules-content" *ngIf="isExpanded(tenant.tenantName)">
+                <div class="loading-state" *ngIf="isLoading(tenant.tenantName)">
+                    <div class="spinner"></div>
+                    <span>Fetching rules...</span>
+                </div>
+
+                <div class="empty-state" *ngIf="!isLoading(tenant.tenantName) && getRules(tenant.tenantName).length === 0">
+                    <span class="material-symbols-outlined">folder_off</span>
+                    <p>No rules found for this tenant.</p>
+                </div>
+
+                <div class="rules-grid" *ngIf="!isLoading(tenant.tenantName) && getRules(tenant.tenantName).length > 0">
+                    <div *ngFor="let rule of getRules(tenant.tenantName)" class="rule-card">
+                        <div class="rule-card-header">
+                            <span class="rule-code">{{ rule.ruleCode }}</span>
+                            <span class="rule-weight">Weight: {{ rule.weight }}</span>
+                        </div>
+                        <p class="rule-description">{{ rule.description }}</p>
+                        
+                        <div class="parameters-section" *ngIf="getObjectKeys(rule.parameters).length > 0">
+                            <div class="params-title">Parameters:</div>
+                            <div class="params-grid">
+                                <div *ngFor="let key of getObjectKeys(rule.parameters)" class="param-item">
+                                    <span class="param-key">{{ key }}:</span>
+                                    <span class="param-value">{{ rule.parameters[key] }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

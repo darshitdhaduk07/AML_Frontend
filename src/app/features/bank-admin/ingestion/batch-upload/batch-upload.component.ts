@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
-import { environment } from '../../../../../environments/environment';
+import { FileService } from '../../../../core/services/file.service';
 
 @Component({
     selector: 'app-batch-upload',
@@ -19,8 +17,7 @@ export class BatchUploadComponent {
     uploadStatus: 'idle' | 'success' | 'error' = 'idle';
 
     constructor(
-        private http: HttpClient,
-        private authService: AuthService,
+        private fileService: FileService,
     ) {}
 
     onFileSelected(event: any) {
@@ -45,25 +42,8 @@ export class BatchUploadComponent {
 
         this.isUploading = true;
 
-        const formData = new FormData();
-        formData.append('file', this.selectedFile, this.selectedFile.name);
-
-        const endpoint = `${environment.apiUrl}/api/files/${this.selectedType.toLowerCase()}`;
-
-        // Retrieve the JWT token from AuthService
-        const token = this.authService.getToken();
-
-        // Set up headers with Bearer token
-        let headers = new HttpHeaders();
-        if (token) {
-            headers = headers.set('Authorization', `Bearer ${token}`);
-        }
-
-        this.http
-            .post(endpoint, formData, {
-                headers: headers,
-                responseType: 'text',
-            })
+        this.fileService
+            .uploadFile(this.selectedFile, this.selectedType)
             .subscribe({
                 next: (response: string) => {
                     this.isUploading = false;

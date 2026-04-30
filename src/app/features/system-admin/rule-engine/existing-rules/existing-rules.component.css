@@ -1,0 +1,248 @@
+.existing-rules-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+}
+
+.icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box.purple {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.section-header p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.tenants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tenant-item {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.tenant-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.tenant-item.expanded {
+    border-color: #7c3aed;
+    box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.1);
+}
+
+.tenant-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    background: white;
+}
+
+.tenant-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tenant-icon {
+    color: #94a3b8;
+    font-size: 24px;
+}
+
+.tenant-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.tenant-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.tenant-id {
+    font-size: 12px;
+    color: #94a3b8;
+    font-family: monospace;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rules-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: #7c3aed;
+    background: #f5f3ff;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.toggle-icon {
+    color: #64748b;
+    transition: transform 0.3s ease;
+}
+
+.rules-content {
+    border-top: 1px solid #f1f5f9;
+    background: #f8fafc;
+    padding: 20px;
+}
+
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 30px;
+    color: #64748b;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-top-color: #7c3aed;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}
+
+.empty-state span {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.rule-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rule-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rule-code {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.rule-weight {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.rule-description {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.parameters-section {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+}
+
+.params-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.params-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.param-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.param-key {
+    color: #64748b;
+}
+
+.param-value {
+    font-weight: 600;
+    color: #1e293b;
+}

@@ -4,14 +4,28 @@
             <span class="material-symbols-outlined">arrow_back</span>
             <span>BACK TO RULES</span>
         </div>
-        <h1>Add New Rule</h1>
+        <h1>Rule Engine</h1>
         <p class="subtitle">
-            Define logic-based triggers and thresholds for automated system
-            responses across your enterprise infrastructure.
+            Manage AML detection logic, thresholds, and triggers across your enterprise infrastructure.
         </p>
+
+        <div class="view-toggle">
+            <button 
+                [class.active]="viewMode === 'add'" 
+                (click)="viewMode = 'add'">
+                <span class="material-symbols-outlined">add_circle</span>
+                Add New Rule
+            </button>
+            <button 
+                [class.active]="viewMode === 'list'" 
+                (click)="viewMode = 'list'">
+                <span class="material-symbols-outlined">list_alt</span>
+                Show Existing Rules
+            </button>
+        </div>
     </div>
 
-    <div class="form-wrapper">
+    <div class="form-wrapper" [formGroup]="ruleForm" *ngIf="viewMode === 'add'">
         <!-- Configuration Basis Section -->
         <section class="form-section">
             <div class="section-title">
@@ -27,77 +41,84 @@
             <div class="input-grid">
                 <div class="field">
                     <label>Select Tenant</label>
-                    <select>
-                        <option disabled selected value="">
+                    <select formControlName="tenant">
+                        <option disabled value="">
                             Choose a tenant...
                         </option>
-                        <option value="global">Global Infrastructure</option>
-                        <option value="us-east">North America - East</option>
-                        <option value="eu-west">Europe - London Hub</option>
+
+                        <option *ngFor="let tenant of tenants" [value]="tenant.tenantName">
+                            {{ tenant.tenantName }}
+                        </option>
                     </select>
                 </div>
                 <div class="field">
                     <label>Select Rule Template</label>
-                    <select>
-                        <option disabled selected value="">
-                            Choose a template...
-                        </option>
-                        <option value="latency">High Latency Alert</option>
-                        <option value="resource">Resource Exhaustion</option>
-                        <option value="security">
-                            Unauthorized Access Pattern
-                        </option>
-                        <option value="custom">Custom Blank Template</option>
-                    </select>
+                    <app-rule-template-dropdown
+                        [templates]="ruleTemplates"
+                        [selectedTemplate]="selectedTemplate"
+                        (selectionChange)="selectTemplate($event)">
+                    </app-rule-template-dropdown>
                 </div>
             </div>
         </section>
 
         <!-- Rule Parameters Section -->
-        <section class="form-section">
+        <section class="form-section" *ngIf="selectedTemplate">
             <div class="section-title">
                 <div class="icon-box blue">
                     <span class="material-symbols-outlined">tune</span>
                 </div>
                 <div>
                     <h3>Rule Parameters</h3>
-                    <p>Fine-tune the logic conditions and execution timing.</p>
+                    <p>Parameters required by the <strong>{{ selectedTemplate.ruleTemplateCode }}</strong> template.</p>
                 </div>
-            </div>
-
-            <div class="field">
-                <label>Condition</label>
-                <select>
-                    <option value="gt">Greater than (&gt;)</option>
-                    <option value="lt">Less than (&lt;)</option>
-                    <option value="eq">Equals (=)</option>
-                    <option value="neq">Not Equal to (≠)</option>
-                </select>
             </div>
 
             <div class="input-grid">
-                <div class="field">
-                    <label>Threshold Value</label>
-                    <input type="number" placeholder="0.00" />
-                    <span class="hint"
-                        >Numerical value to trigger the action.</span
-                    >
+                <!-- Default Rule Parameters -->
+                <div class="field full-width">
+                    <label>Rule Description</label>
+                    <input type="text" formControlName="description" placeholder="Describe the purpose of this rule..." />
+                    <span class="hint">* Required field</span>
                 </div>
+                
                 <div class="field">
-                    <label>Action Delay</label>
-                    <div class="unit-input">
-                        <input type="text" placeholder="500" />
-                        <span class="unit">MS</span>
+                    <label>Rule Weight</label>
+                    <input type="number" formControlName="weight" placeholder="1" min="1" />
+                    <span class="hint">Priority/Weight of this rule (1-100)</span>
+                </div>
+
+                <!-- Dynamic Parameters -->
+                <ng-container formGroupName="parameters">
+                    <div class="field" *ngFor="let key of getParameterKeys(selectedTemplate)">
+                        <label>{{ key | titlecase }}</label>
+                        <input 
+                            [formControlName]="key"
+                            [type]="(selectedTemplate.requiredParameters[key]?.type || '').includes('String') ? 'text' : 'number'"
+                            [placeholder]="'Enter ' + key"
+                        />
+                        <span class="hint" *ngIf="selectedTemplate.requiredParameters[key]?.required">* Required field</span>
                     </div>
-                    <span class="hint">Wait time before rule execution.</span>
+                </ng-container>
+            </div>
+        </section>
+
+        <section class="form-section empty-state" *ngIf="!selectedTemplate">
+            <div class="section-title">
+                <div class="icon-box gray">
+                    <span class="material-symbols-outlined">info</span>
+                </div>
+                <div>
+                    <h3>No Template Selected</h3>
+                    <p>Please choose a rule template above to configure its specific parameters.</p>
                 </div>
             </div>
         </section>
 
         <div class="footer-grid">
             <div class="actions">
-                <button class="btn-ghost">Save as Draft</button>
-                <button class="btn-primary">Add Rule</button>
+                <button class="btn-ghost" routerLink="/sys/dashboard">Cancel</button>
+                <button class="btn-primary" (click)="onSubmit()">Add Rule</button>
             </div>
             <div class="tip-card">
                 <div class="tip-header">
@@ -112,4 +133,6 @@
             </div>
         </div>
     </div>
+
+    <app-existing-rules *ngIf="viewMode === 'list'"></app-existing-rules>
 </div>

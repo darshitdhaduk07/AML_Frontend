@@ -1,0 +1,27 @@
+<div class="dropdown-container">
+    <div class="dropdown-trigger" (click)="toggleDropdown()" [class.open]="isOpen">
+        <div class="selected-value" *ngIf="selectedTemplate; else placeholder">
+            <span class="type-badge">{{ selectedTemplate.ruleTemplateType }}</span>
+            <span class="template-code">{{ selectedTemplate.ruleTemplateCode }}</span>
+        </div>
+        <ng-template #placeholder>
+            <span class="placeholder-text">Choose a rule template...</span>
+        </ng-template>
+        <span class="material-symbols-outlined arrow" [class.rotate]="isOpen">expand_more</span>
+    </div>
+
+    <div class="dropdown-menu" *ngIf="isOpen">
+        <div class="menu-header">
+            <span class="header-text">Available Templates</span>
+            <span class="template-count">{{ templates.length }} Found</span>
+        </div>
+        <div class="template-list">
+            <app-rule-template-card
+                *ngFor="let template of templates"
+                [template]="template"
+                [isSelected]="selectedTemplate?.ruleTemplateCode === template.ruleTemplateCode"
+                (selected)="selectTemplate($event)">
+            </app-rule-template-card>
+        </div>
+    </div>
+</div>
