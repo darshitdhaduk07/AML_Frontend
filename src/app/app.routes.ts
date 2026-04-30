@@ -74,6 +74,13 @@ export const routes: Routes = [
                     ),
             },
             {
+                path: 'alerts/customer/:customerNumber',
+                loadComponent: () =>
+                    import('./features/bank-admin/alerts/customer-detail/customer-detail.component').then(
+                        (m) => m.CustomerDetailComponent,
+                    ),
+            },
+            {
                 path: 'ingestion/upload',
                 loadComponent: () =>
                     import('./features/bank-admin/ingestion/batch-upload/batch-upload.component').then(
