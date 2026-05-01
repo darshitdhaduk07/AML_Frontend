@@ -106,24 +106,27 @@
 .notification-icon.case-escalated { background: #fef3c7; color: #b45309; }
 .notification-icon.sar-filed { background: #dcfce7; color: #15803d; }
 
-.notification-info {
+.notification-content {
     flex: 1;
 }
 
-.notification-info .message {
+.notification-message {
     margin: 0;
     font-size: 0.9rem;
     color: #374151;
     line-height: 1.4;
 }
 
-.notification-info .time {
+.notification-time {
     margin: 4px 0 0;
     font-size: 0.75rem;
     color: #9ca3af;
+    display: block;
 }
 
-.unread-dot {
+/* Unread indicator dot */
+.notification-item.unread::after {
+    content: '';
     width: 8px;
     height: 8px;
     background: #3b82f6;

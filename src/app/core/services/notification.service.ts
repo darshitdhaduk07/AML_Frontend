@@ -47,17 +47,8 @@ export class NotificationService {
 
         return this.http.get<PaginatedResponse<InAppNotificationResponseDto>>(`${this.apiUrl}/api/v1/notifications/${roleEndpoint}`, { params }).pipe(
             tap(response => {
-                if (response) {
-                    const content = response.content || (Array.isArray(response) ? response : null);
-                    if (content && Array.isArray(content)) {
-                        const count = content.filter(n => {
-                            const isRead = n.isRead === true || (n as any).read === true;
-                            return !isRead;
-                        }).length;
-                        if (page === 0) {
-                            this.unreadCountSubject.next(count);
-                        }
-                    }
+                if (response && typeof response.totalElements === 'number') {
+                    this.unreadCountSubject.next(response.totalElements);
                 }
             })
         );

@@ -44,16 +44,10 @@ export class NotificationPanelComponent implements OnInit, OnChanges {
                 console.log('[NotificationPanel] Received response:', response);
                 if (response && response.content && Array.isArray(response.content)) {
                     this.totalElements = response.totalElements || 0;
-                    this.notifications = response.content.filter((n: any) => {
-                        const isRead = n.isRead === true || n.read === true;
-                        return !isRead;
-                    });
+                    this.notifications = response.content;
                 } else if (Array.isArray(response)) {
                     this.totalElements = response.length;
-                    this.notifications = response.filter((n: any) => {
-                        const isRead = n.isRead === true || n.read === true;
-                        return !isRead;
-                    });
+                    this.notifications = response;
                 } else {
                     this.notifications = [];
                 }
