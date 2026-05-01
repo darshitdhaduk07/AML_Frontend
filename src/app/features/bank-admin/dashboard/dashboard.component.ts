@@ -90,6 +90,7 @@ interface UniqueCustomer {
 export class BankAdminDashboardComponent implements OnInit {
     private alertService = inject(AlertService);
     private dataService = inject(DataService);
+    private toastService = inject(ToastService);
     private router = inject(Router);
     
     customers: UniqueCustomer[] = [];
@@ -162,11 +163,12 @@ export class BankAdminDashboardComponent implements OnInit {
 
         this.dataService.assignInvestigation(payload).subscribe({
             next: (response) => {
-                alert(`Successfully assigned customer ${this.selectedCustomerNumber} to ${email}`);
+                this.toastService.success(`Successfully assigned customer ${this.selectedCustomerNumber} to ${email}`);
+                this.loadAlerts(); // Refresh to remove the assigned alert
             },
             error: (err) => {
                 console.error('Assignment failed', err);
-                alert('Failed to assign investigation. Please try again.');
+                // ErrorInterceptor will show the error toast
             }
         });
     }

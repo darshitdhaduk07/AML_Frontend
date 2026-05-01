@@ -1,0 +1,98 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Case Tracking</h1>
+        <p>Monitor and manage all investigation cases</p>
+    </div>
+</div>
+
+<div class="filter-section">
+    <div class="status-filters">
+        <button 
+            *ngFor="let status of statuses" 
+            class="filter-btn" 
+            [class.active]="selectedStatus === status.value"
+            (click)="selectedStatus = status.value; onStatusChange()"
+        >
+            {{ status.label }}
+        </button>
+    </div>
+</div>
+
+<div class="content-card">
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading cases...</p>
+    </div>
+
+    <div *ngIf="!loading && cases.length === 0" class="empty-state">
+        <span class="material-symbols-outlined">work_off</span>
+        <p>No cases found for the selected criteria</p>
+    </div>
+
+    <div *ngIf="!loading && cases.length > 0" class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Case Name</th>
+                    <th>Customer Number</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>SAR Filed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let case of cases">
+                    <td>
+                        <div class="case-name">{{ case.caseName }}</div>
+                    </td>
+                    <td>
+                        <span class="customer-id">{{ case.customerNumber }}</span>
+                    </td>
+                    <td>
+                        <div class="description-cell">{{ case.caseDescription }}</div>
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="case.caseStatus.toLowerCase()">
+                            {{ case.caseStatus }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="sar-badge" [class.filed]="case.sarFiled">
+                            {{ case.sarFiled ? 'Filed' : 'Not Filed' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="actions-cell">
+                            <button 
+                                class="action-btn" 
+                                (click)="onViewDetails(case.customerNumber)"
+                                title="View Details"
+                            >
+                                <span class="material-symbols-outlined">visibility</span>
+                                <span>Details</span>
+                            </button>
+                            
+                            <button 
+                                *ngIf="case.sarFiled"
+                                class="action-btn download" 
+                                (click)="onDownloadSar(case.id)"
+                                title="Download SAR Report"
+                            >
+                                <span class="material-symbols-outlined">download</span>
+                                <span>SAR</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <app-paginator
+            [length]="totalElements"
+            [pageSize]="pageSize"
+            [pageIndex]="pageNumber"
+            (page)="onPageChange($event)">
+        </app-paginator>
+    </div>
+</div>

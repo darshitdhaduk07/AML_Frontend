@@ -1,0 +1,71 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Escalated Cases</h1>
+        <p>Review and manage cases escalated by Compliance Officers</p>
+    </div>
+</div>
+
+<div class="content-card">
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading cases...</p>
+    </div>
+
+    <div *ngIf="!loading && cases.length === 0" class="empty-state">
+        <span class="material-symbols-outlined">inbox</span>
+        <p>No escalated cases found</p>
+    </div>
+
+    <div *ngIf="!loading && cases.length > 0" class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Case Name</th>
+                    <th>Customer Number</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>SAR Filed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let case of cases">
+                    <td>
+                        <div class="case-name">{{ case.caseName }}</div>
+                    </td>
+                    <td>
+                        <span class="customer-id">{{ case.customerNumber }}</span>
+                    </td>
+                    <td>
+                        <div class="description-cell">{{ case.caseDescription }}</div>
+                    </td>
+                    <td>
+                        <span class="status-badge escalated">ESCALATED</span>
+                    </td>
+                    <td>
+                        <span class="sar-badge" [class.filed]="case.sarFiled">
+                            {{ case.sarFiled ? 'Filed' : 'Not Filed' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button 
+                            class="action-btn" 
+                            (click)="onViewDetails(case.customerNumber)"
+                            title="View Details"
+                        >
+                            <span class="material-symbols-outlined">visibility</span>
+                            <span>Details</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <app-paginator
+            [length]="totalElements"
+            [pageSize]="pageSize"
+            [pageIndex]="pageNumber"
+            (page)="onPageChange($event)">
+        </app-paginator>
+    </div>
+</div>

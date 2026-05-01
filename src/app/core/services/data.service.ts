@@ -16,10 +16,16 @@ export class DataService {
     private http = inject(HttpClient);
     private authService = inject(AuthService);
 
-    getTenants(): Observable<TenantDto[]> {
-        return this.http.get<TenantDto[]>(
+    getTenants(page: number = 0, size: number = 10): Observable<PaginatedResponse<TenantDto>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<TenantDto>>(
             `${this.apiUrl}/api/v1/data/tenants`,
-            { headers: this.authService.getHeaders() }
+            { 
+                headers: this.authService.getHeaders(),
+                params
+            }
         );
     }
 
@@ -65,10 +71,16 @@ export class DataService {
         );
     }
 
-    getComplianceOfficers(): Observable<ComplianceOfficerResponseDto[]> {
-        return this.http.get<ComplianceOfficerResponseDto[]>(
+    getComplianceOfficers(page: number = 0, size: number = 10): Observable<PaginatedResponse<ComplianceOfficerResponseDto>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<ComplianceOfficerResponseDto>>(
             `${this.apiUrl}/api/v1/data/compliance-officers`,
-            { headers: this.authService.getHeaders() }
+            { 
+                headers: this.authService.getHeaders(),
+                params
+            }
         );
     }
 
@@ -138,15 +150,43 @@ export class DataService {
         );
     }
 
-    getCases(page: number = 0, size: number = 10): Observable<PaginatedResponse<any>> {
-        const params = new HttpParams()
+    getCases(page: number = 0, size: number = 10, status?: string): Observable<PaginatedResponse<any>> {
+        let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
+        
+        if (status) {
+            params = params.set('status', status);
+        }
+
         return this.http.get<PaginatedResponse<any>>(
             `${this.apiUrl}/api/v1/investigation/cases`,
             { 
                 headers: this.authService.getHeaders(),
                 params 
+            }
+        );
+    }
+
+    getEscalatedCases(page: number = 0, size: number = 10): Observable<PaginatedResponse<any>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<any>>(
+            `${this.apiUrl}/api/v1/investigation/escalated-cases`,
+            { 
+                headers: this.authService.getHeaders(),
+                params 
+            }
+        );
+    }
+
+    downloadCaseReport(caseId: string): Observable<Blob> {
+        return this.http.get(
+            `${this.apiUrl}/api/v1/reports/cases/${caseId}/pdf`,
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'blob' 
             }
         );
     }

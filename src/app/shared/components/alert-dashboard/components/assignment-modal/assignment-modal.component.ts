@@ -83,9 +83,9 @@ export class AssignmentModalComponent implements OnInit {
 
     loadOfficers(): void {
         this.loading = true;
-        this.dataService.getComplianceOfficers().subscribe({
-            next: (data: ComplianceOfficerResponseDto[]) => {
-                this.officers = data;
+        this.dataService.getComplianceOfficers(0, 100).subscribe({
+            next: (response) => {
+                this.officers = response.content;
                 this.loading = false;
             },
             error: (err: any) => {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DataService } from '../../../../core/services/data.service';
+import { ToastService } from '../../../../core/services/toast.service';
 import { TenantDto } from '../../../../shared/models/tenant.dto';
 import { RuleTemplateDto } from '../../../../shared/models/rule-template.dto';
 import { RuleTemplateDropdownComponent } from './components/rule-template-dropdown/rule-template-dropdown.component';
@@ -20,6 +21,7 @@ export class RuleRegistrationComponent {
     private dataService = inject(DataService);
     private fb = inject(FormBuilder);
     private router = inject(Router);
+    private toastService = inject(ToastService);
 
     public tenants !: TenantDto[];
     public ruleTemplates !: RuleTemplateDto[];
@@ -37,9 +39,9 @@ export class RuleRegistrationComponent {
     }
 
     ngOnInit(): void {
-        this.dataService.getTenants().subscribe({
-            next: (tenants) => {
-                this.tenants = tenants;
+        this.dataService.getTenants(0, 100).subscribe({
+            next: (response) => {
+                this.tenants = response.content;
             },
             error: (error) => {
                 console.error('Tenant Fetch failed', error);
@@ -81,7 +83,7 @@ export class RuleRegistrationComponent {
     onSubmit() {
         const template = this.selectedTemplate;
         if (this.ruleForm.invalid || !template) {
-            alert('Please fill all required fields correctly.');
+            this.toastService.warning('Please fill all required fields correctly.');
             return;
         }
 
@@ -116,12 +118,12 @@ export class RuleRegistrationComponent {
 
         this.dataService.createRule(payload).subscribe({
             next: (response) => {
-                alert(response);
+                this.toastService.success(response || 'Rule created successfully');
                 this.router.navigate(['/sys/dashboard']);
             },
             error: (error) => {
                 console.error('Failed to create rule', error);
-                alert('Error creating rule: ' + (error.error?.message || 'Unknown error'));
+                // ErrorInterceptor will handle the error toast
             }
         });
     }

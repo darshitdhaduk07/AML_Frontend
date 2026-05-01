@@ -24,9 +24,9 @@ export class ExistingRulesComponent implements OnInit {
   public tenantPagination: Map<string, { pageIndex: number, pageSize: number, totalElements: number }> = new Map();
 
   ngOnInit(): void {
-    this.dataService.getTenants().subscribe({
-      next: (tenants) => {
-        this.tenants = tenants;
+    this.dataService.getTenants(0, 100).subscribe({
+      next: (response) => {
+        this.tenants = response.content;
       },
       error: (error) => {
         console.error('Failed to fetch tenants', error);

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FileService } from '../../../../core/services/file.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
     selector: 'app-batch-upload',
@@ -18,6 +19,7 @@ export class BatchUploadComponent {
 
     constructor(
         private fileService: FileService,
+        private toastService: ToastService
     ) {}
 
     onFileSelected(event: any) {
@@ -29,14 +31,14 @@ export class BatchUploadComponent {
             } else {
                 this.selectedFile = null;
                 this.uploadStatus = 'error';
-                alert('Please select a valid CSV file.');
+                this.toastService.error('Please select a valid CSV file.');
             }
         }
     }
 
     triggerUpload() {
         if (!this.selectedFile || !this.selectedType) {
-            alert('Please select both a file and an ingestion type.');
+            this.toastService.warning('Please select both a file and an ingestion type.');
             return;
         }
 
@@ -48,14 +50,15 @@ export class BatchUploadComponent {
                 next: (response: string) => {
                     this.isUploading = false;
                     this.uploadStatus = 'success';
-                    alert(response);
+                    this.toastService.success(response || 'File uploaded successfully');
+                    // Reset form on success
+                    this.selectedFile = null;
+                    this.selectedType = '';
                 },
                 error: (error) => {
                     this.isUploading = false;
                     this.uploadStatus = 'error';
-                    const errorMsg =
-                        error.error || 'Upload failed. Please try again.';
-                    alert(errorMsg);
+                    // We DO NOT set this.selectedFile = null here so the user can retry
                 },
             });
     }

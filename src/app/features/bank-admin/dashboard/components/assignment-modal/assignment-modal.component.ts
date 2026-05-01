@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../../core/services/data.service';
 import { ComplianceOfficerResponseDto } from '../../../../../shared/models/compliance-officer.dto';
+import { ToastService } from '../../../../../core/services/toast.service';
 
 @Component({
     selector: 'app-assignment-modal',
@@ -70,6 +71,7 @@ export class AssignmentModalComponent implements OnInit {
     @Output() select = new EventEmitter<string>();
 
     private dataService = inject(DataService);
+    private toastService = inject(ToastService);
 
     officers: ComplianceOfficerResponseDto[] = [];
     searchQuery: string = '';
@@ -81,9 +83,9 @@ export class AssignmentModalComponent implements OnInit {
 
     loadOfficers(): void {
         this.loading = true;
-        this.dataService.getComplianceOfficers().subscribe({
-            next: (data) => {
-                this.officers = data;
+        this.dataService.getComplianceOfficers(0, 100).subscribe({
+            next: (response) => {
+                this.officers = response.content;
                 this.loading = false;
             },
             error: (err) => {
@@ -101,7 +103,7 @@ export class AssignmentModalComponent implements OnInit {
 
     onSelect(officer: ComplianceOfficerResponseDto): void {
         if (officer.isLocked || officer.isSuspended) {
-            alert('This officer is currently unavailable.');
+            this.toastService.warning('This officer is currently unavailable.');
             return;
         }
         this.select.emit(officer.email);

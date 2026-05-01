@@ -25,9 +25,9 @@ export class CoListComponent implements OnInit {
 
   fetchOfficers() {
     this.isLoading = true;
-    this.dataService.getComplianceOfficers().subscribe({
-      next: (data) => {
-        this.complianceOfficers = data;
+    this.dataService.getComplianceOfficers(0, 100).subscribe({
+      next: (response) => {
+        this.complianceOfficers = response.content;
         this.filterOfficers();
         this.isLoading = false;
       },

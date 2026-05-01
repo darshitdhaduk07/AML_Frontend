@@ -1,0 +1,177 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Reports Dashboard</h1>
+        <p>Comprehensive analytics and compliance logging</p>
+    </div>
+    <div class="header-actions" *ngIf="activeTab === 'flagged'">
+        <div class="date-filters">
+            <div class="filter-group">
+                <label>From</label>
+                <input type="date" [(ngModel)]="startDate">
+            </div>
+            <div class="filter-group">
+                <label>To</label>
+                <input type="date" [(ngModel)]="endDate">
+            </div>
+        </div>
+        <button class="download-btn" (click)="downloadAlertPdf()">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            Export PDF
+        </button>
+    </div>
+</div>
+
+<div class="tab-section">
+    <div class="tab-bar">
+        <button [class.active]="activeTab === 'flagged'" (click)="setTab('flagged')">Flagged Transactions</button>
+        <button [class.active]="activeTab === 'sar'" (click)="setTab('sar')">SAR Logs</button>
+        <button [class.active]="activeTab === 'co'" (click)="setTab('co')">CO Performance</button>
+        <button [class.active]="activeTab === 'batch'" (click)="setTab('batch')">Batch Summary</button>
+    </div>
+</div>
+
+<div class="content-card">
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching report data...</p>
+    </div>
+
+    <div *ngIf="!loading">
+        <!-- Flagged Transactions -->
+        <div *ngIf="activeTab === 'flagged'" class="report-view">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Txn Time</th>
+                        <th>Customer</th>
+                        <th>Rule</th>
+                        <th>Txn #</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of flaggedTransactions">
+                        <td>{{ item.transaction?.txnTime | date:'short' }}</td>
+                        <td>{{ item.customer_number }}</td>
+                        <td>{{ item.ruleDescription }}</td>
+                        <td>{{ item.transaction?.transactionNumber }}</td>
+                        <td><span class="score-badge">{{ item.weight }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <app-paginator
+                [length]="flaggedTotal"
+                [pageSize]="flaggedPageSize"
+                [pageIndex]="flaggedPage"
+                (page)="onPageChange($event)">
+            </app-paginator>
+        </div>
+
+        <!-- SAR Logs -->
+        <div *ngIf="activeTab === 'sar'" class="report-view">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Case Name</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of sarLogs">
+                        <td>{{ item.caseName }}</td>
+                        <td>{{ item.customerNumber }}</td>
+                        <td><span class="status-badge" [ngClass]="item.caseStatus?.toLowerCase()">{{ item.caseStatus }}</span></td>
+                        <td>
+                            <button class="icon-btn" (click)="downloadCasePdf(item.id)">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div *ngIf="sarLogs.length === 0" class="empty-state">
+                <span class="material-symbols-outlined">description</span>
+                <p>No Suspicious Activity Reports (SAR) have been filed yet.</p>
+            </div>
+        </div>
+
+        <!-- CO Performance -->
+        <div *ngIf="activeTab === 'co'" class="report-view">
+            <div class="stats-grid">
+                <div *ngFor="let co of coPerformance" class="stat-card co-performance-card">
+                    <div class="co-header">
+                        <div class="co-avatar">{{ co.name[0] | uppercase }}</div>
+                        <div class="co-info">
+                            <h3>{{ co.name }}</h3>
+                            <p>{{ co.email }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <span class="m-value">{{ co.total }}</span>
+                            <span class="m-label">Total</span>
+                        </div>
+                        <div class="metric active">
+                            <span class="m-value">{{ co.active }}</span>
+                            <span class="m-label">Active</span>
+                        </div>
+                        <div class="metric completed">
+                            <span class="m-value">{{ co.completed }}</span>
+                            <span class="m-label">Closed</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-label">Completion Rate</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" 
+                                [style.width.%]="co.total > 0 ? (co.completed / co.total) * 100 : 0">
+                            </div>
+                        </div>
+                        <div class="progress-percentage">
+                            {{ co.total > 0 ? ((co.completed / co.total) * 100 | number:'1.0-0') : 0 }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Summary -->
+        <div *ngIf="activeTab === 'batch'" class="report-view">
+            <table class="data-table" *ngIf="batchSummaries.length > 0">
+                <thead>
+                    <tr>
+                        <th>Upload Time</th>
+                        <th>File Name</th>
+                        <th>Type</th>
+                        <th>Records</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let batch of batchSummaries">
+                        <td>{{ batch.createdAt | date:'short' }}</td>
+                        <td>{{ batch.fileName }}</td>
+                        <td><span class="type-badge">{{ batch.fileType }}</span></td>
+                        <td>{{ batch.recordCount }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="batch.status?.toLowerCase()">
+                                {{ batch.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div *ngIf="batchSummaries.length === 0" class="empty-state">
+                <span class="material-symbols-outlined">history</span>
+                <p>No data ingestion history found.</p>
+            </div>
+        </div>
+    </div>
+</div>

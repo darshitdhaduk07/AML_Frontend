@@ -96,6 +96,27 @@ export const routes: Routes = [
                         (m) => m.UserManagementComponent,
                     ),
             },
+            {
+                path: 'escalated-cases',
+                loadComponent: () =>
+                    import('./features/bank-admin/escalated-cases/escalated-cases.component').then(
+                        (m) => m.EscalatedCasesComponent,
+                    ),
+            },
+            {
+                path: 'cases',
+                loadComponent: () =>
+                    import('./features/bank-admin/cases/cases.component').then(
+                        (m) => m.CasesComponent,
+                    ),
+            },
+            {
+                path: 'reports',
+                loadComponent: () =>
+                    import('./features/bank-admin/reports/reports.component').then(
+                        (m) => m.ReportsComponent,
+                    ),
+            },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],
     },
