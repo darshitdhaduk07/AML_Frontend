@@ -94,10 +94,10 @@
                         <label>{{ key | titlecase }}</label>
                         <input 
                             [formControlName]="key"
-                            [type]="(selectedTemplate.requiredParameters[key]?.type || '').includes('String') ? 'text' : 'number'"
+                            [type]="(selectedTemplate.requiredParameters[key].type || '').includes('String') ? 'text' : 'number'"
                             [placeholder]="'Enter ' + key"
                         />
-                        <span class="hint" *ngIf="selectedTemplate.requiredParameters[key]?.required">* Required field</span>
+                        <span class="hint" *ngIf="selectedTemplate.requiredParameters[key].required">* Required field</span>
                     </div>
                 </ng-container>
             </div>

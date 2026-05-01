@@ -69,16 +69,18 @@ export const routes: Routes = [
             {
                 path: 'dashboard',
                 loadComponent: () =>
-                    import('./features/bank-admin/dashboard/dashboard.component').then(
-                        (m) => m.BankAdminDashboardComponent,
+                    import('./shared/components/alert-dashboard/dashboard.component').then(
+                        (m) => m.AlertDashboardComponent,
                     ),
+                data: { role: 'ADMIN' }
             },
             {
                 path: 'alerts/customer/:customerNumber',
                 loadComponent: () =>
-                    import('./features/bank-admin/alerts/customer-detail/customer-detail.component').then(
+                    import('./shared/components/customer-detail/customer-detail.component').then(
                         (m) => m.CustomerDetailComponent,
                     ),
+                data: { role: 'ADMIN' }
             },
             {
                 path: 'ingestion/upload',
@@ -107,6 +109,14 @@ export const routes: Routes = [
                     import('./features/compliance-officer/dashboard/dashboard.component').then(
                         (m) => m.ComplianceOfficerDashboardComponent,
                     ),
+            },
+            {
+                path: 'alerts/customer/:customerNumber',
+                loadComponent: () =>
+                    import('./shared/components/customer-detail/customer-detail.component').then(
+                        (m) => m.CustomerDetailComponent,
+                    ),
+                data: { role: 'OFFICER' }
             },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],

@@ -79,7 +79,8 @@ export class RuleRegistrationComponent {
     }
 
     onSubmit() {
-        if (this.ruleForm.invalid || !this.selectedTemplate) {
+        const template = this.selectedTemplate;
+        if (this.ruleForm.invalid || !template) {
             alert('Please fill all required fields correctly.');
             return;
         }
@@ -88,10 +89,10 @@ export class RuleRegistrationComponent {
         const processedParameters: any = {};
 
         // Cast parameters based on template metadata
-        if (this.selectedTemplate.requiredParameters) {
+        if (template.requiredParameters) {
             Object.keys(formValue.parameters).forEach(key => {
                 const value = formValue.parameters[key];
-                const type = this.selectedTemplate?.requiredParameters[key]?.type || '';
+                const type = template.requiredParameters[key].type || '';
 
                 if (type.includes('Integer') || type.includes('Long') || type.includes('Short')) {
                     processedParameters[key] = value !== '' ? parseInt(value, 10) : null;
@@ -107,7 +108,7 @@ export class RuleRegistrationComponent {
 
         const payload = {
             tenant: formValue.tenant,
-            ruleCode: this.selectedTemplate.ruleTemplateCode,
+            ruleCode: template.ruleTemplateCode,
             weight: formValue.weight,
             description: formValue.description,
             parameters: processedParameters

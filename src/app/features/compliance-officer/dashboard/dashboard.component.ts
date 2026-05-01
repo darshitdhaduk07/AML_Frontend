@@ -1,19 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AlertDashboardComponent } from '../../../shared/components/alert-dashboard/dashboard.component';
 
 @Component({
     selector: 'app-compliance-officer-dashboard',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, AlertDashboardComponent],
     template: `
-        <div class="dashboard-container">
-            <h1>Compliance Monitoring Dashboard</h1>
-            <p>
-                Investigate alerts, screen transactions, and manage case
-                workflows.
-            </p>
-        </div>
+        <app-alert-dashboard role="OFFICER"></app-alert-dashboard>
     `,
-    styles: ['.dashboard-container { padding: 24px; }'],
+    styles: [],
 })
 export class ComplianceOfficerDashboardComponent {}

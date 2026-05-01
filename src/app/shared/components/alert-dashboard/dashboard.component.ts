@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AlertService, Alert } from '../../../core/services/alert.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertService, Alert, AssignmentResponseDto } from '../../../core/services/alert.service';
 import { AssignmentModalComponent } from './components/assignment-modal/assignment-modal.component';
 import { DataService } from '../../../core/services/data.service';
 
@@ -13,14 +13,14 @@ interface UniqueCustomer {
 }
 
 @Component({
-    selector: 'app-bank-admin-dashboard',
+    selector: 'app-alert-dashboard',
     standalone: true,
     imports: [CommonModule, AssignmentModalComponent],
     template: `
         <div class="dashboard-container">
             <div class="dashboard-header">
-                <h1>Alert Dashboard</h1>
-                <p>Institutional risk summary by unique customer.</p>
+                <h1>{{ role === 'ADMIN' ? 'Alert Dashboard' : 'Alert Review' }}</h1>
+                <p>{{ role === 'ADMIN' ? 'Institutional risk summary by unique customer.' : 'Manage and investigate assigned customer alerts.' }}</p>
             </div>
 
             <div class="alerts-card">
@@ -33,12 +33,12 @@ interface UniqueCustomer {
 
                 <div *ngIf="loading" class="loading-state">
                     <div class="loading-spinner"></div>
-                    <p>Fetching institutional alerts...</p>
+                    <p>Fetching {{ role === 'ADMIN' ? 'institutional' : 'assigned' }} alerts...</p>
                 </div>
 
                 <div *ngIf="!loading && customers.length === 0" class="loading-state">
                     <span class="material-symbols-outlined" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px">info</span>
-                    <p>No active alerts found for your institution.</p>
+                    <p>No {{ role === 'ADMIN' ? 'active' : 'assigned' }} alerts found.</p>
                 </div>
 
                 <div *ngFor="let customer of customers; last as isLast" class="alert-row" [style.border-bottom]="isLast ? 'none' : '1px solid #f1f5f9'">
@@ -70,7 +70,7 @@ interface UniqueCustomer {
                     </div>
 
                     <div class="actions">
-                        <button class="btn btn-outline" (click)="openAssignmentModal(customer.customer_number)">Assign To</button>
+                        <button *ngIf="role === 'ADMIN'" class="btn btn-outline" (click)="openAssignmentModal(customer.customer_number)">Assign To</button>
                         <button class="btn btn-primary" (click)="seeDetails(customer.customer_number)">See Details</button>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ interface UniqueCustomer {
 
             <!-- Assignment Modal -->
             <app-assignment-modal
-                *ngIf="showAssignmentModal"
+                *ngIf="showAssignmentModal && role === 'ADMIN'"
                 [customerNumber]="selectedCustomerNumber"
                 (close)="showAssignmentModal = false"
                 (select)="onOfficerSelected($event)"
@@ -87,10 +87,13 @@ interface UniqueCustomer {
     `,
     styleUrl: './dashboard.component.css',
 })
-export class BankAdminDashboardComponent implements OnInit {
+export class AlertDashboardComponent implements OnInit {
+    @Input() role: 'ADMIN' | 'OFFICER' = 'ADMIN';
+
     private alertService = inject(AlertService);
     private dataService = inject(DataService);
     private router = inject(Router);
+    private route = inject(ActivatedRoute);
     
     customers: UniqueCustomer[] = [];
     loading = true;
@@ -101,25 +104,40 @@ export class BankAdminDashboardComponent implements OnInit {
     selectedCustomerNumber = '';
 
     ngOnInit() {
+        const routeRole = this.route.snapshot.data['role'];
+        if (routeRole) this.role = routeRole;
         this.loadAlerts();
     }
 
     loadAlerts() {
         this.loading = true;
-        this.alertService.getAlerts().subscribe({
-            next: (data) => {
-                this.groupAlertsByCustomer(data);
-                this.loading = false;
-            },
-            error: (err) => {
-                console.error('Error fetching alerts:', err);
-                this.loading = false;
-            }
-        });
+        if (this.role === 'ADMIN') {
+            this.alertService.getAlerts().subscribe({
+                next: (data: Alert[]) => {
+                    this.groupAlertsByCustomer(data);
+                    this.loading = false;
+                },
+                error: (err: any) => {
+                    console.error('Error fetching alerts:', err);
+                    this.loading = false;
+                }
+            });
+        } else {
+            this.alertService.getAssignments().subscribe({
+                next: (data: AssignmentResponseDto[]) => {
+                    this.mapAssignmentsToCustomers(data);
+                    this.loading = false;
+                },
+                error: (err: any) => {
+                    console.error('Error fetching assignments:', err);
+                    this.loading = false;
+                }
+            });
+        }
     }
 
     groupAlertsByCustomer(alerts: Alert[]) {
-        const grouped = alerts.reduce((acc, alert) => {
+        const grouped = alerts.reduce((acc: Record<string, UniqueCustomer>, alert: Alert) => {
             if (!acc[alert.customer_number]) {
                 acc[alert.customer_number] = {
                     customer_number: alert.customer_number,
@@ -137,6 +155,15 @@ export class BankAdminDashboardComponent implements OnInit {
         this.customers = Object.values(grouped);
     }
 
+    mapAssignmentsToCustomers(assignments: AssignmentResponseDto[]) {
+        this.customers = assignments.map(assignment => ({
+            customer_number: assignment.customerResponseDto.customerNumber,
+            totalWeight: assignment.riskScore,
+            alertCount: assignment.customerResponseDto.alerts.length,
+            alerts: []
+        }));
+    }
+
     getRiskColor(weight: number): string {
         if (weight > 70) return '#ef4444'; // Red
         if (weight > 30) return '#f59e0b'; // Yellow
@@ -144,7 +171,8 @@ export class BankAdminDashboardComponent implements OnInit {
     }
 
     seeDetails(customerNumber: string) {
-        this.router.navigate(['/bank/alerts/customer', customerNumber]);
+        const base = this.role === 'ADMIN' ? '/bank' : '/co';
+        this.router.navigate([`${base}/alerts/customer`, customerNumber]);
     }
 
     openAssignmentModal(customerNumber: string) {
@@ -161,10 +189,10 @@ export class BankAdminDashboardComponent implements OnInit {
         };
 
         this.dataService.assignInvestigation(payload).subscribe({
-            next: (response) => {
+            next: (response: string) => {
                 alert(`Successfully assigned customer ${this.selectedCustomerNumber} to ${email}`);
             },
-            error: (err) => {
+            error: (err: any) => {
                 console.error('Assignment failed', err);
                 alert('Failed to assign investigation. Please try again.');
             }
