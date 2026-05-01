@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NotificationPanelComponent } from '../../shared/components/notification-panel/notification-panel.component';
 import { NotificationService } from '../../core/services/notification.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-compliance-officer-layout',
@@ -18,10 +19,11 @@ import { NotificationService } from '../../core/services/notification.service';
 })
 export class ComplianceOfficerLayoutComponent {
     private notificationService = inject(NotificationService);
+    private authService = inject(AuthService);
+    private router = inject(Router);
+
     isNotificationOpen = false;
     unreadCount$ = this.notificationService.unreadCount$;
-
-    constructor(private router: Router) {}
 
     toggleNotifications() {
         this.isNotificationOpen = !this.isNotificationOpen;
@@ -32,9 +34,9 @@ export class ComplianceOfficerLayoutComponent {
      * Ensures investigation audit logs record the system exit.
      */
     logout() {
-        console.log(
-            'Recording audit event: Compliance Officer session terminated.',
-        ); // [cite: 266]
-        this.router.navigate(['/admin/login']);
+        this.authService.logout().subscribe({
+            next: () => this.router.navigate(['/admin/login']),
+            error: () => this.router.navigate(['/admin/login'])
+        });
     }
 }

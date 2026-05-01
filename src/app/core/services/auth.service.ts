@@ -110,7 +110,22 @@ export class AuthService {
     /**
      * Clears session and logs out.
      */
-    logout() {
-        this.storageService.deleteCookie(this.AUTH_TOKEN_KEY);
+    logout(): Observable<any> {
+        const token = this.getToken();
+        if (!token) {
+            this.storageService.deleteCookie(this.AUTH_TOKEN_KEY);
+            return of(null);
+        }
+
+        return this.http.post(`${this.apiUrl}/api/v1/auth/logout`, {}, { 
+            headers: this.getHeaders(),
+            responseType: 'text' 
+        }).pipe(
+            // Use finalize to ensure cookie is deleted even if request fails
+            tap({
+                next: () => this.storageService.deleteCookie(this.AUTH_TOKEN_KEY),
+                error: () => this.storageService.deleteCookie(this.AUTH_TOKEN_KEY)
+            })
+        );
     }
 }
