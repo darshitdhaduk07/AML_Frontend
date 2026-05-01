@@ -2,11 +2,13 @@ import { Component, EventEmitter, inject, Input, OnInit, Output, OnChanges, Simp
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../core/services/notification.service';
 import { InAppNotificationResponseDto } from '../../../core/models/notification.model';
+import { PaginatorComponent } from '../paginator/paginator.component';
+import { PaginatedResponse } from '../../models/paginated-response';
 
 @Component({
     selector: 'app-notification-panel',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, PaginatorComponent],
     templateUrl: './notification-panel.component.html',
     styleUrl: './notification-panel.component.css'
 })
@@ -19,44 +21,67 @@ export class NotificationPanelComponent implements OnInit, OnChanges {
     notifications: InAppNotificationResponseDto[] = [];
     loading = false;
 
+    // Pagination
+    pageIndex = 0;
+    pageSize = 5;
+    totalElements = 0;
+
     ngOnInit() {
         this.loadNotifications();
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['isOpen'] && changes['isOpen'].currentValue === true) {
+            this.pageIndex = 0; // Reset to first page when opening
             this.loadNotifications();
         }
     }
 
     loadNotifications() {
         this.loading = true;
-        this.notificationService.getNotifications().subscribe({
-            next: (data) => {
-                console.log('Fetched notifications:', data);
-                this.notifications = data
-                    .filter(n => {
-                        const isRead = n.isRead === true || (n as any).read === true;
+        this.notificationService.getNotifications(this.pageIndex, this.pageSize).subscribe({
+            next: (response: any) => {
+                console.log('[NotificationPanel] Received response:', response);
+                if (response && response.content && Array.isArray(response.content)) {
+                    this.totalElements = response.totalElements || 0;
+                    this.notifications = response.content.filter((n: any) => {
+                        const isRead = n.isRead === true || n.read === true;
                         return !isRead;
-                    })
-                    .sort((a, b) => 
-                        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                    );
+                    });
+                } else if (Array.isArray(response)) {
+                    this.totalElements = response.length;
+                    this.notifications = response.filter((n: any) => {
+                        const isRead = n.isRead === true || n.read === true;
+                        return !isRead;
+                    });
+                } else {
+                    this.notifications = [];
+                }
                 this.loading = false;
             },
             error: (err) => {
-                console.error('Failed to load notifications', err);
+                console.error('[NotificationPanel] Failed to load notifications', err);
                 this.loading = false;
             }
         });
     }
 
+    onPageChange(newPageIndex: number) {
+        this.pageIndex = newPageIndex;
+        this.loadNotifications();
+    }
+
     markAsRead(id: string) {
-        console.log('Marking as read, ID:', id);
         this.notificationService.markAsRead(id).subscribe({
             next: () => {
-                console.log('Successfully marked as read in backend');
                 this.notifications = this.notifications.filter(n => n.id !== id);
+                // If the current page becomes empty and there are more pages, go to prev or reload
+                if (this.notifications.length === 0 && this.pageIndex > 0) {
+                    this.pageIndex--;
+                    this.loadNotifications();
+                } else if (this.notifications.length === 0 && this.totalElements > 0) {
+                    this.loadNotifications();
+                }
             },
             error: (err) => {
                 console.error('Failed to mark as read:', err);

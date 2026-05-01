@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { PaginatedResponse } from '../../shared/models/paginated-response';
 
 export interface Alert {
     active: boolean;
@@ -13,6 +14,8 @@ export interface Alert {
     transaction?: TransactionDto;
     transaction_number?: string;
     weight: number;
+    id: string;
+    falsePositive: boolean;
 }
 
 export interface TransactionDto {
@@ -55,11 +58,17 @@ export class AlertService {
     private apiUrl = environment.apiUrl;
     private http = inject(HttpClient);
 
-    getAlerts(): Observable<Alert[]> {
-        return this.http.get<Alert[]>(`${this.apiUrl}/api/v1/rules/alerts`);
+    getAlerts(page: number = 0, size: number = 10): Observable<PaginatedResponse<Alert>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<Alert>>(`${this.apiUrl}/api/v1/rules/alerts`, { params });
     }
 
-    getAssignments(): Observable<AssignmentResponseDto[]> {
-        return this.http.get<AssignmentResponseDto[]>(`${this.apiUrl}/api/v1/investigation/assignments`);
+    getAssignments(page: number = 0, size: number = 10): Observable<PaginatedResponse<AssignmentResponseDto>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<AssignmentResponseDto>>(`${this.apiUrl}/api/v1/investigation/assignments`, { params });
     }
 }

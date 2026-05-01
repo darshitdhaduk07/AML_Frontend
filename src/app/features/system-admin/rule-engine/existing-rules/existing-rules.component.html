@@ -41,6 +41,7 @@
 
                 <div class="rules-grid" *ngIf="!isLoading(tenant.tenantName) && getRules(tenant.tenantName).length > 0">
                     <div *ngFor="let rule of getRules(tenant.tenantName)" class="rule-card">
+                        <!-- ... existing rule card content ... -->
                         <div class="rule-card-header">
                             <span class="rule-code">{{ rule.ruleCode }}</span>
                             <span class="rule-weight">Weight: {{ rule.weight }}</span>
@@ -58,6 +59,14 @@
                         </div>
                     </div>
                 </div>
+
+                <app-paginator
+                    *ngIf="!isLoading(tenant.tenantName) && getPagination(tenant.tenantName)"
+                    [length]="getPagination(tenant.tenantName)!.totalElements"
+                    [pageSize]="getPagination(tenant.tenantName)!.pageSize"
+                    [pageIndex]="getPagination(tenant.tenantName)!.pageIndex"
+                    (page)="onPageChange(tenant.tenantName, $event)"
+                ></app-paginator>
             </div>
         </div>
     </div>

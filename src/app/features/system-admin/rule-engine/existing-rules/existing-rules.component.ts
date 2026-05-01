@@ -2,11 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../../../core/services/data.service';
 import { TenantDto } from '../../../../shared/models/tenant.dto';
+import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
+import { PaginatedResponse } from '../../../../shared/models/paginated-response';
 
 @Component({
   selector: 'app-existing-rules',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PaginatorComponent],
   templateUrl: './existing-rules.component.html',
   styleUrl: './existing-rules.component.css'
 })
@@ -17,6 +19,9 @@ export class ExistingRulesComponent implements OnInit {
   public expandedTenants: Set<string> = new Set();
   public tenantRules: Map<string, any[]> = new Map();
   public loadingTenants: Set<string> = new Set();
+  
+  // Pagination per tenant
+  public tenantPagination: Map<string, { pageIndex: number, pageSize: number, totalElements: number }> = new Map();
 
   ngOnInit(): void {
     this.dataService.getTenants().subscribe({
@@ -35,16 +40,20 @@ export class ExistingRulesComponent implements OnInit {
     } else {
       this.expandedTenants.add(tenantName);
       if (!this.tenantRules.has(tenantName)) {
+        this.tenantPagination.set(tenantName, { pageIndex: 0, pageSize: 5, totalElements: 0 });
         this.fetchRules(tenantName);
       }
     }
   }
 
   fetchRules(tenantName: string): void {
+    const pagination = this.tenantPagination.get(tenantName) || { pageIndex: 0, pageSize: 5, totalElements: 0 };
     this.loadingTenants.add(tenantName);
-    this.dataService.getRulesByTenant(tenantName).subscribe({
-      next: (rules) => {
-        this.tenantRules.set(tenantName, rules);
+    this.dataService.getRulesByTenant(tenantName, pagination.pageIndex, pagination.pageSize).subscribe({
+      next: (response: PaginatedResponse<any>) => {
+        this.tenantRules.set(tenantName, response.content);
+        pagination.totalElements = response.totalElements;
+        this.tenantPagination.set(tenantName, pagination);
         this.loadingTenants.delete(tenantName);
       },
       error: (error) => {
@@ -52,6 +61,19 @@ export class ExistingRulesComponent implements OnInit {
         this.loadingTenants.delete(tenantName);
       }
     });
+  }
+
+  onPageChange(tenantName: string, newPageIndex: number): void {
+    const pagination = this.tenantPagination.get(tenantName);
+    if (pagination) {
+      pagination.pageIndex = newPageIndex;
+      this.tenantPagination.set(tenantName, pagination);
+      this.fetchRules(tenantName);
+    }
+  }
+
+  getPagination(tenantName: string) {
+    return this.tenantPagination.get(tenantName);
   }
 
   isExpanded(tenantName: string): boolean {

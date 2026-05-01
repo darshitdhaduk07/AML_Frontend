@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { TenantDto } from '../../shared/models/tenant.dto';
 import { RuleTemplateDto } from '../../shared/models/rule-template.dto';
 import { ComplianceOfficerResponseDto, ComplianceInvestigationAssignmentDto } from '../../shared/models/compliance-officer.dto';
+import { PaginatedResponse } from '../../shared/models/paginated-response';
 
 @Injectable({
     providedIn: 'root',
@@ -40,10 +41,16 @@ export class DataService {
         );
     }
 
-    getRulesByTenant(tenantName: string): Observable<any[]> {
-        return this.http.get<any[]>(
+    getRulesByTenant(tenantName: string, page: number = 0, size: number = 10): Observable<PaginatedResponse<any>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<any>>(
             `${this.apiUrl}/api/v1/rules/${tenantName}`,
-            { headers: this.authService.getHeaders() }
+            { 
+                headers: this.authService.getHeaders(),
+                params 
+            }
         );
     }
 
@@ -94,6 +101,52 @@ export class DataService {
             { 
                 headers: this.authService.getHeaders(),
                 responseType: 'text'
+            }
+        );
+    }
+
+    markFalsePositive(brokenRuleId: string): Observable<string> {
+        return this.http.put(
+            `${this.apiUrl}/api/v1/investigation/mark-false-positive/${brokenRuleId}`,
+            {},
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
+
+    escalateCase(caseId: string): Observable<string> {
+        return this.http.put(
+            `${this.apiUrl}/api/v1/investigation/cases/${caseId}/escalate`,
+            {},
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
+
+    fileSar(caseId: string): Observable<string> {
+        return this.http.put(
+            `${this.apiUrl}/api/v1/investigation/cases/${caseId}/file-sar`,
+            {},
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
+
+    getCases(page: number = 0, size: number = 10): Observable<PaginatedResponse<any>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<any>>(
+            `${this.apiUrl}/api/v1/investigation/cases`,
+            { 
+                headers: this.authService.getHeaders(),
+                params 
             }
         );
     }

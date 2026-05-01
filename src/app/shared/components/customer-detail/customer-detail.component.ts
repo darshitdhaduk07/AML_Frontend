@@ -4,6 +4,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AlertService, Alert, AssignmentResponseDto } from '../../../core/services/alert.service';
 import { DataService } from '../../../core/services/data.service';
 import { FormsModule } from '@angular/forms';
+import { PaginatedResponse } from '../../../shared/models/paginated-response';
+import { ToastService } from '../../../core/services/toast.service';
 
 interface GroupedAlerts {
     group_id: string;
@@ -44,6 +46,11 @@ interface GroupedAlerts {
                 </div>
 
                 <div *ngIf="!loading">
+                    <div *ngIf="groupedAlerts.length === 0" class="loading-state">
+                        <span class="material-symbols-outlined" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px">info</span>
+                        <p>No alerts found for this customer.</p>
+                    </div>
+
                     <section class="group-section" *ngFor="let group of groupedAlerts">
                         <div class="group-header">
                             <span class="material-symbols-outlined">
@@ -56,7 +63,7 @@ interface GroupedAlerts {
                         </div>
                         
                         <div class="alerts-grid">
-                            <div class="alert-item-card" *ngFor="let alert of group.alerts">
+                            <div class="alert-item-card" *ngFor="let alert of group.alerts" [class.false-positive]="alert.falsePositive">
                                 <div class="alert-type-icon">
                                     <span class="material-symbols-outlined">
                                         {{ alert.transaction_number ? 'receipt_long' : 'person_alert' }}
@@ -70,6 +77,7 @@ interface GroupedAlerts {
                                     <div class="rule-code-row">
                                         <span class="rule-code">{{ alert.ruleCode }}</span>
                                         <span class="rule-type" *ngIf="alert.ruleType">{{ alert.ruleType }}</span>
+                                        <span *ngIf="alert.falsePositive" class="fp-badge">FALSE POSITIVE</span>
                                     </div>
                                     <p class="rule-desc">{{ alert.ruleDescription }}</p>
                                     
@@ -95,10 +103,17 @@ interface GroupedAlerts {
                                     </div>
 
                                     <div class="alert-footer">
-                                        <span class="weight-tag">Weight: {{ alert.weight }}</span>
-                                        <span class="status-tag" [class.active]="alert.active">
-                                            {{ alert.active ? 'Open' : 'Closed' }}
-                                        </span>
+                                        <div style="display: flex; flex-direction: column; gap: 4px">
+                                            <span class="weight-tag">Weight: {{ alert.weight }}</span>
+                                            <span class="status-tag" [class.active]="alert.active">
+                                                {{ alert.active ? 'Open' : 'Closed' }}
+                                            </span>
+                                        </div>
+                                        <button *ngIf="role === 'OFFICER' && !alert.falsePositive" 
+                                                class="btn-fp" 
+                                                (click)="markAsFalsePositive(alert.id)">
+                                            Mark False Positive
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -151,23 +166,36 @@ interface GroupedAlerts {
         .group-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: #1e293b; }
         .group-header h2 { font-size: 18px; font-weight: 700; margin: 0; }
         
-        .alerts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-        .alert-item-card { display: flex; gap: 16px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #f1f5f9; }
+        .alerts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .alert-item-card { 
+            display: flex; gap: 16px; padding: 16px; background: #f8fafc; 
+            border-radius: 8px; border: 1px solid #f1f5f9; position: relative;
+            transition: all 0.2s;
+        }
+        .alert-item-card.false-positive { opacity: 0.7; background: #f1f5f9; border-style: dashed; }
         .alert-type-icon { width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; }
         
         .alert-details { flex: 1; }
         .alert-id-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; }
         .alert-label { color: #94a3b8; font-weight: 700; text-transform: uppercase; }
         .alert-val { color: #1e293b; font-weight: 600; }
-        .rule-code-row { margin-bottom: 4px; display: flex; gap: 8px; align-items: center; }
+        .rule-code-row { margin-bottom: 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .rule-code { font-size: 11px; font-weight: 800; color: #6366f1; background: #e0e7ff; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
         .rule-type { font-size: 10px; font-weight: 700; color: #64748b; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .fp-badge { font-size: 9px; font-weight: 900; color: #ef4444; border: 1px solid #ef4444; padding: 1px 4px; border-radius: 4px; }
         .rule-desc { font-size: 14px; color: #475569; margin: 0 0 12px 0; line-height: 1.5; }
         
-        .alert-footer { display: flex; justify-content: space-between; align-items: center; }
+        .alert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; }
         .weight-tag { font-size: 12px; font-weight: 700; color: #0f172a; }
-        .status-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #fee2e2; color: #991b1b; }
+        .status-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #fee2e2; color: #991b1b; width: fit-content; }
         .status-tag.active { background: #dcfce7; color: #166534; }
+
+        .btn-fp { 
+            font-size: 11px; font-weight: 600; color: #ef4444; background: white; 
+            border: 1px solid #fee2e2; padding: 4px 8px; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-fp:hover { background: #fee2e2; }
 
         .transaction-details { 
             margin: 12px 0; padding: 12px; background: white; border-radius: 8px; 
@@ -204,6 +232,7 @@ export class CustomerDetailComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private alertService = inject(AlertService);
     private dataService = inject(DataService);
+    private toastService = inject(ToastService);
     
     customerNumber: string = '';
     groupedAlerts: GroupedAlerts[] = [];
@@ -228,9 +257,9 @@ export class CustomerDetailComponent implements OnInit {
     loadCustomerAlerts() {
         this.loading = true;
         if (this.role === 'ADMIN') {
-            this.alertService.getAlerts().subscribe({
-                next: (data: Alert[]) => {
-                    this.processAlerts(data);
+            this.alertService.getAlerts(0, 100).subscribe({
+                next: (response: PaginatedResponse<Alert>) => {
+                    this.processAlerts(response.content || []);
                     this.loading = false;
                 },
                 error: (err: any) => {
@@ -239,9 +268,9 @@ export class CustomerDetailComponent implements OnInit {
                 }
             });
         } else {
-            this.alertService.getAssignments().subscribe({
-                next: (data: AssignmentResponseDto[]) => {
-                    const assignment = data.find(a => a.customerResponseDto.customerNumber === this.customerNumber);
+            this.alertService.getAssignments(0, 100).subscribe({
+                next: (response: PaginatedResponse<AssignmentResponseDto>) => {
+                    const assignment = response.content?.find(a => a.customerResponseDto.customerNumber === this.customerNumber);
                     if (assignment) {
                         this.processAssignment(assignment);
                     }
@@ -297,6 +326,21 @@ export class CustomerDetailComponent implements OnInit {
         return '#10b981'; // Green
     }
 
+    markAsFalsePositive(brokenRuleId: string) {
+        if (confirm('Are you sure you want to mark this alert as a False Positive? This will exclude it from risk calculations.')) {
+            this.dataService.markFalsePositive(brokenRuleId).subscribe({
+                next: (resp) => {
+                    this.toastService.success('Alert marked as False Positive');
+                    this.loadCustomerAlerts(); // Reload to see changes
+                },
+                error: (err) => {
+                    console.error('Failed to mark false positive', err);
+                    this.toastService.error('Failed to mark False Positive');
+                }
+            });
+        }
+    }
+
     submitCase() {
         const payload = {
             ...this.newCase,
@@ -305,13 +349,13 @@ export class CustomerDetailComponent implements OnInit {
 
         this.dataService.createCase(payload).subscribe({
             next: (resp: string) => {
-                alert('Case created successfully: ' + resp);
+                this.toastService.success('Case created successfully');
                 this.showCaseModal = false;
                 this.newCase = { caseName: '', caseDiscription: '' };
             },
             error: (err: any) => {
                 console.error('Error creating case:', err);
-                alert('Failed to create case.');
+                this.toastService.error('Failed to create case.');
             }
         });
     }

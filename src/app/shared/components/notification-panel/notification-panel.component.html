@@ -19,22 +19,27 @@
         </div>
 
         <div *ngIf="!loading && notifications.length > 0" class="notification-list">
-            <div 
-                *ngFor="let notification of notifications" 
-                class="notification-item" 
-                [class.unread]="!notification.isRead"
-                (click)="markAsRead(notification.id)"
-            >
+            <div *ngFor="let notification of notifications" class="notification-item" [class.unread]="!notification.isRead">
                 <div class="notification-icon" [ngClass]="getTypeClass(notification.type)">
                     <span class="material-symbols-outlined">{{ getIcon(notification.type) }}</span>
                 </div>
-                <div class="notification-info">
-                    <p class="message">{{ notification.message }}</p>
-                    <p class="time">{{ notification.createdAt | date:'short' }}</p>
+                <div class="notification-content">
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <span class="notification-time">{{ notification.createdAt | date:'short' }}</span>
                 </div>
-                <div *ngIf="!notification.isRead" class="unread-dot"></div>
+                <button class="mark-read-btn" (click)="markAsRead(notification.id)">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </button>
             </div>
         </div>
+
+        <app-paginator
+            *ngIf="!loading && totalElements > pageSize"
+            [length]="totalElements"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            (page)="onPageChange($event)"
+        ></app-paginator>
     </div>
 
     <div class="panel-footer" *ngIf="notifications.length > 0">

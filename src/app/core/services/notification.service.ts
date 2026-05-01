@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap, interval, startWith, switchMap, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, interval, startWith, switchMap, of, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { InAppNotificationResponseDto } from '../models/notification.model';
 import { AuthService } from './auth.service';
+import { PaginatedResponse } from '../../shared/models/paginated-response';
 
 @Injectable({
     providedIn: 'root',
@@ -21,27 +22,43 @@ export class NotificationService {
             startWith(0),
             switchMap(() => {
                 if (this.authService.isAuthenticated()) {
-                    return this.getNotifications();
+                    return this.getNotifications(0, 50).pipe(
+                        catchError(err => {
+                            console.error('Notification polling failed', err);
+                            return of(null);
+                        })
+                    );
                 }
-                return [];
+                return of(null);
             })
         ).subscribe();
     }
 
     /**
-     * Fetches all notifications for the current user and updates unread count.
+     * Fetches paginated notifications for the current user and updates unread count based on the current page.
      */
-    getNotifications(): Observable<InAppNotificationResponseDto[]> {
+    getNotifications(page: number = 0, size: number = 10): Observable<PaginatedResponse<InAppNotificationResponseDto> | null> {
         const roleEndpoint = this.getRoleEndpoint();
-        if (!roleEndpoint) return of([]);
+        if (!roleEndpoint) return of(null);
 
-        return this.http.get<InAppNotificationResponseDto[]>(`${this.apiUrl}/api/v1/notifications/${roleEndpoint}`).pipe(
-            tap(notifications => {
-                const count = notifications.filter(n => {
-                    const isRead = n.isRead === true || (n as any).read === true;
-                    return !isRead;
-                }).length;
-                this.unreadCountSubject.next(count);
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+
+        return this.http.get<PaginatedResponse<InAppNotificationResponseDto>>(`${this.apiUrl}/api/v1/notifications/${roleEndpoint}`, { params }).pipe(
+            tap(response => {
+                if (response) {
+                    const content = response.content || (Array.isArray(response) ? response : null);
+                    if (content && Array.isArray(content)) {
+                        const count = content.filter(n => {
+                            const isRead = n.isRead === true || (n as any).read === true;
+                            return !isRead;
+                        }).length;
+                        if (page === 0) {
+                            this.unreadCountSubject.next(count);
+                        }
+                    }
+                }
             })
         );
     }
@@ -68,19 +85,4 @@ export class NotificationService {
         );
     }
 
-    /**
-     * Escalates a case.
-     * @param caseId The ID of the case to escalate.
-     */
-    escalateCase(caseId: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/api/v1/investigation/cases/${caseId}/escalate`, {});
-    }
-
-    /**
-     * Files a SAR for a case.
-     * @param caseId The ID of the case.
-     */
-    fileSar(caseId: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/api/v1/investigation/cases/${caseId}/file-sar`, {});
-    }
 }
