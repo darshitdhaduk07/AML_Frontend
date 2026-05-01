@@ -1,0 +1,32 @@
+<div class="user-mgmt-container">
+    <div class="header">
+        <div class="back-link" routerLink="/bank/dashboard">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>BACK TO DASHBOARD</span>
+        </div>
+        <h1>User Management</h1>
+        <p class="subtitle">
+            Register and manage compliance officers to handle your bank's AML investigations.
+        </p>
+
+        <div class="view-toggle">
+            <button 
+                [class.active]="viewMode === 'register'" 
+                (click)="viewMode = 'register'">
+                <span class="material-symbols-outlined">person_add</span>
+                Register New CO
+            </button>
+            <button 
+                [class.active]="viewMode === 'manage'" 
+                (click)="viewMode = 'manage'">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                Manage Existing COs
+            </button>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <app-co-registration *ngIf="viewMode === 'register'"></app-co-registration>
+        <app-co-list *ngIf="viewMode === 'manage'"></app-co-list>
+    </div>
+</div>

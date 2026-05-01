@@ -86,4 +86,15 @@ export class DataService {
             }
         );
     }
+
+    registerComplianceOfficer(email: string): Observable<string> {
+        return this.http.post(
+            `${this.apiUrl}/api/v1/auth/register/co`,
+            { email },
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
 }

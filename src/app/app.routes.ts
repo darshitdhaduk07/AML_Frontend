@@ -89,6 +89,13 @@ export const routes: Routes = [
                         (m) => m.BatchUploadComponent,
                     ),
             },
+            {
+                path: 'user-management',
+                loadComponent: () =>
+                    import('./features/bank-admin/user-management/user-management.component').then(
+                        (m) => m.UserManagementComponent,
+                    ),
+            },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],
     },

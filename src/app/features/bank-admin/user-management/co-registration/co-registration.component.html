@@ -1,0 +1,57 @@
+<div class="registration-wrapper">
+    <section class="form-section">
+        <div class="section-title">
+            <div class="icon-box blue">
+                <span class="material-symbols-outlined">person_add</span>
+            </div>
+            <div>
+                <h3>Compliance Officer Details</h3>
+                <p>Enter the email address of the officer you wish to register.</p>
+            </div>
+        </div>
+
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+            <div class="field">
+                <label>Email Address</label>
+                <div class="input-container">
+                    <span class="material-symbols-outlined icon">mail</span>
+                    <input 
+                        type="email" 
+                        formControlName="email" 
+                        placeholder="officer@bank.com"
+                        [class.error]="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched"
+                    />
+                </div>
+                <span class="hint" *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+                    Please enter a valid email address.
+                </span>
+            </div>
+
+            <div class="form-footer">
+                <button 
+                    type="submit" 
+                    class="btn-primary" 
+                    [disabled]="registrationForm.invalid || isSubmitting">
+                    <span class="material-symbols-outlined" *ngIf="!isSubmitting">how_to_reg</span>
+                    <span class="spinner" *ngIf="isSubmitting"></span>
+                    {{ isSubmitting ? 'Registering...' : 'Register Compliance Officer' }}
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <div class="info-card">
+        <div class="info-header">
+            <span class="material-symbols-outlined">info</span>
+            <strong>What happens next?</strong>
+        </div>
+        <p>
+            Once registered, the compliance officer will receive an email with instructions to set up their password and access the dashboard.
+        </p>
+        <ul class="info-list">
+            <li><span class="material-symbols-outlined">check_circle</span> Instant access to assigned alerts</li>
+            <li><span class="material-symbols-outlined">check_circle</span> Case management capabilities</li>
+            <li><span class="material-symbols-outlined">check_circle</span> Audit trail tracking</li>
+        </ul>
+    </div>
+</div>
