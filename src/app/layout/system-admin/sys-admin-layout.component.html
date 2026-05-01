@@ -68,15 +68,14 @@
     </aside>
 
     <header class="main-header">
-        <div class="header-search">
-            <span class="material-symbols-outlined">search</span>
-            <input placeholder="Search resources..." type="text" />
+        <div class="header-breadcrumb">
+            <span class="root">Administration</span>
+            <span class="separator">/</span>
+            <span class="current">{{ getPageTitle() }}</span>
         </div>
+        <div class="header-spacer" style="flex: 1"></div>
 
         <div class="header-actions">
-            <button class="icon-btn">
-                <span class="material-symbols-outlined">notifications</span>
-            </button>
             <div class="header-divider"></div>
             <div class="user-profile">
                 <div class="user-details">

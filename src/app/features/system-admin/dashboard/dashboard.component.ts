@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DataService } from '../../../core/services/data.service';
 
 @Component({
     selector: 'app-sys-admin-dashboard',
@@ -18,35 +19,24 @@ import { RouterModule } from '@angular/router';
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">Active Banks</div>
-                    <div class="stat-value">24</div>
+                    <div class="stat-label">Onboarded Banks</div>
+                    <div class="stat-value">{{ totalBanks }}</div>
                     <div class="stat-meta success">
                         <span class="material-symbols-outlined"
-                            >trending_up</span
+                            >account_balance</span
                         >
-                        <span>+2 this month</span>
+                        <span>Active Institutional Tenants</span>
                     </div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-label">System Health</div>
-                    <div class="stat-value" style="color: #16A34A">
-                        Operational
-                    </div>
-                    <div class="stat-meta">
+                    <div class="stat-label">Global Rule Templates</div>
+                    <div class="stat-value">{{ totalTemplates }}</div>
+                    <div class="stat-meta info">
                         <span class="material-symbols-outlined"
-                            >check_circle</span
+                            >settings_input_component</span
                         >
-                        <span>All systems go</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-label">Alerts (24h)</div>
-                    <div class="stat-value">1,204</div>
-                    <div class="stat-meta warning">
-                        <span class="material-symbols-outlined">warning</span>
-                        <span>12 attention required</span>
+                        <span>Available Detection Logic</span>
                     </div>
                 </div>
             </div>
@@ -72,4 +62,29 @@ import { RouterModule } from '@angular/router';
     `,
     styleUrl: './dashboard.component.css',
 })
-export class SystemAdminDashboardComponent {}
+export class SystemAdminDashboardComponent implements OnInit {
+    private dataService = inject(DataService);
+
+    totalBanks: number = 0;
+    totalTemplates: number = 0;
+
+    ngOnInit(): void {
+        this.loadStats();
+    }
+
+    loadStats() {
+        this.dataService.getTenants(0, 1).subscribe({
+            next: (res) => {
+                this.totalBanks = res.totalElements;
+            },
+            error: (err) => console.error('Failed to load bank count', err)
+        });
+
+        this.dataService.getRuleTemplates().subscribe({
+            next: (res) => {
+                this.totalTemplates = res.length;
+            },
+            error: (err) => console.error('Failed to load template count', err)
+        });
+    }
+}

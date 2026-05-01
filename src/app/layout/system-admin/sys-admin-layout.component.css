@@ -127,29 +127,26 @@
     z-index: 30;
 }
 
-.header-search {
-    flex: 1;
-    max-width: 400px;
-    position: relative;
-}
-
-.header-search input {
-    width: 100%;
-    padding: 6px 12px 6px 40px;
-    background-color: #f8fafc;
-    border: 1px solid transparent;
-    border-radius: 8px;
+.header-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 14px;
-    outline: none;
+    font-weight: 500;
 }
 
-.header-search .material-symbols-outlined {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 18px;
+.header-breadcrumb .root {
+    color: #64748b;
+}
+
+.header-breadcrumb .separator {
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+.header-breadcrumb .current {
+    color: #0f172a;
+    font-weight: 600;
 }
 
 .header-actions {
