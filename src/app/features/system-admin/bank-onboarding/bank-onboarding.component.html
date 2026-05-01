@@ -1,0 +1,76 @@
+<div class="onboarding-container">
+    <div class="header">
+        <div class="back-link" routerLink="/sys/dashboard">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>BACK TO DASHBOARD</span>
+        </div>
+        <h1>Bank Onboarding</h1>
+        <p class="subtitle">
+            Register a new financial institution into the AML Governance framework.
+        </p>
+    </div>
+
+    <div class="form-card" *ngIf="!successMessage">
+        <div class="card-header">
+            <div class="icon-box blue">
+                <span class="material-symbols-outlined">account_balance</span>
+            </div>
+            <div>
+                <h3>Tenant Registration</h3>
+                <p>Provide basic details to initiate the onboarding process.</p>
+            </div>
+        </div>
+
+        <form [formGroup]="onboardingForm" (ngSubmit)="onSubmit()">
+            <div class="field">
+                <label>Institution Name</label>
+                <div class="input-wrapper">
+                    <span class="material-symbols-outlined input-icon">business</span>
+                    <input 
+                        type="text" 
+                        formControlName="tenantName" 
+                        placeholder="e.g. Global Trust Bank"
+                    />
+                </div>
+                <span class="error" *ngIf="onboardingForm.get('tenantName')?.touched && onboardingForm.get('tenantName')?.invalid">
+                    Valid institution name is required.
+                </span>
+            </div>
+
+            <div class="field">
+                <label>Admin Email Address</label>
+                <div class="input-wrapper">
+                    <span class="material-symbols-outlined input-icon">mail</span>
+                    <input 
+                        type="email" 
+                        formControlName="email" 
+                        placeholder="admin@institution.com"
+                    />
+                </div>
+                <span class="error" *ngIf="onboardingForm.get('email')?.touched && onboardingForm.get('email')?.invalid">
+                    Valid email address is required.
+                </span>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn-ghost" routerLink="/sys/dashboard">Cancel</button>
+                <button type="submit" class="btn-primary" [disabled]="onboardingForm.invalid || isSubmitting">
+                    {{ isSubmitting ? 'Processing...' : 'Register Institution' }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="success-card" *ngIf="successMessage">
+        <div class="success-icon">
+            <span class="material-symbols-outlined">check_circle</span>
+        </div>
+        <h2>Registration Successful!</h2>
+        <p class="response-text">{{ successMessage }}</p>
+        <div class="info-box">
+            <span class="material-symbols-outlined">info</span>
+            <p>An automated email has been sent to the registered address with temporary credentials and login instructions.</p>
+        </div>
+        <button class="btn-primary full-width" routerLink="/sys/dashboard">Return to Dashboard</button>
+    </div>
+</div>

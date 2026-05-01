@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { StorageService } from './storage.service';
+import { LoginResponse } from '../../shared/models/auth.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -16,8 +17,21 @@ export class AuthService {
     /**
      * Performs login and saves the JWT token upon success.
      */
-    login(payload: any): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/login`, payload).pipe(
+    login(credentials: any, bankName: string, isSystemAdmin: boolean): Observable<LoginResponse> {
+        const apiPayload = isSystemAdmin
+            ? {
+                  role: 'SYSTEM_ADMIN',
+                  email: credentials.email,
+                  password: credentials.password,
+              }
+            : {
+                  tenant: bankName,
+                  role: credentials.role,
+                  email: credentials.email,
+                  password: credentials.password,
+              };
+
+        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, apiPayload).pipe(
             tap((response) => {
                 if (response?.jwt) {
                     this.storageService.setCookie(
@@ -34,6 +48,18 @@ export class AuthService {
      */
     getToken(): string | null {
         return this.storageService.getCookie(this.AUTH_TOKEN_KEY);
+    }
+
+    /**
+     * Returns HttpHeaders with Authorization token if available.
+     */
+    getHeaders(): HttpHeaders {
+        let headers = new HttpHeaders();
+        const token = this.getToken();
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+        return headers;
     }
 
     /**

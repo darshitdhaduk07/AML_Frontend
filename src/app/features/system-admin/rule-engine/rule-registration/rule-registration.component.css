@@ -28,6 +28,45 @@
 .subtitle {
     color: #64748b;
     font-size: 14px;
+    margin-bottom: 32px;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 12px;
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.view-toggle button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-toggle button .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.view-toggle button:hover {
+    color: #0f172a;
+}
+
+.view-toggle button.active {
+    background: white;
+    color: #2563eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .form-wrapper {
@@ -62,6 +101,17 @@
 .icon-box.blue {
     background: #eff6ff;
     color: #2563eb;
+}
+
+.icon-box.gray {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.empty-state {
+    opacity: 0.7;
+    border-style: dashed;
+    background: #fcfcfc;
 }
 
 .section-title h3 {
@@ -199,3 +249,8 @@ input:focus {
     font-weight: 600;
     text-decoration: none;
 }
+
+.field.full-width {
+    grid-column: 1 / -1;
+}
+

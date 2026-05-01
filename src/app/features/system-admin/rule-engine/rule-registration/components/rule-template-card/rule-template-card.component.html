@@ -1,0 +1,12 @@
+<div class="template-item" [class.selected]="isSelected" (click)="onSelect()">
+    <div class="item-main">
+        <div class="item-header">
+            <span class="type-badge">{{ template.ruleTemplateType }}</span>
+            <span class="template-code">{{ template.ruleTemplateCode }}</span>
+        </div>
+        <p class="description">{{ template.ruleTemplateDescription }}</p>
+    </div>
+    <div class="selection-check" *ngIf="isSelected">
+        <span class="material-symbols-outlined">check</span>
+    </div>
+</div>

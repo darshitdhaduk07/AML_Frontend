@@ -45,6 +45,13 @@ export const routes: Routes = [
                         (m) => m.RuleRegistrationComponent,
                     ),
             },
+            {
+                path: 'bank-registry',
+                loadComponent: () =>
+                    import('./features/system-admin/bank-onboarding/bank-onboarding.component').then(
+                        (m) => m.BankOnboardingComponent,
+                    ),
+            },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],
     },

@@ -24,20 +24,7 @@ export class LoginPageComponent {
     }
 
     handleLogin(credentials: any) {
-        const apiPayload = this.isSystemAdmin
-            ? {
-                  role: 'SYSTEM_ADMIN',
-                  email: credentials.email,
-                  password: credentials.password,
-              }
-            : {
-                  tenant: this.bankName,
-                  role: credentials.role,
-                  email: credentials.email,
-                  password: credentials.password,
-              };
-
-        this.authService.login(apiPayload).subscribe({
+        this.authService.login(credentials, this.bankName, this.isSystemAdmin).subscribe({
             next: () => {
                 const role = this.authService.getUserRole();
                 this.redirectByRole(role);
