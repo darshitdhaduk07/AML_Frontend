@@ -81,9 +81,13 @@
         </div>
 
         <div class="header-actions">
-            <button class="icon-btn">
+            <button class="icon-btn" (click)="toggleNotifications()">
                 <span class="material-symbols-outlined">notifications</span>
             </button>
+            <app-notification-panel 
+                [isOpen]="isNotificationOpen" 
+                (close)="isNotificationOpen = false">
+            </app-notification-panel>
             <div class="header-divider"></div>
             <div class="user-profile">
                 <div class="user-details">
