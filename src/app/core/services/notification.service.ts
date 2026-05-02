@@ -45,7 +45,7 @@ export class NotificationService {
             .set('page', page.toString())
             .set('size', size.toString());
 
-        return this.http.get<PaginatedResponse<InAppNotificationResponseDto>>(`${this.apiUrl}/api/v1/notifications/${roleEndpoint}`, { params }).pipe(
+        return this.http.get<PaginatedResponse<InAppNotificationResponseDto>>(`${this.apiUrl}/api/v1/notifications`, { params }).pipe(
             tap(response => {
                 if (response && typeof response.totalElements === 'number') {
                     this.unreadCountSubject.next(response.totalElements);

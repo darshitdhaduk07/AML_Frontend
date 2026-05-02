@@ -16,13 +16,12 @@
 
         <nav class="sidebar-nav">
             <a
-                routerLink="/bank/dashboard"
+                routerLink="/bank/user-management"
                 routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
                 class="nav-link"
             >
-                <span class="material-symbols-outlined">dashboard</span>
-                Alert Dashboard
+                <span class="material-symbols-outlined">group</span>
+                User Management
             </a>
 
             <a
@@ -35,12 +34,13 @@
             </a>
 
             <a
-                routerLink="/bank/user-management"
+                routerLink="/bank/dashboard"
                 routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
                 class="nav-link"
             >
-                <span class="material-symbols-outlined">group</span>
-                User Management
+                <span class="material-symbols-outlined">dashboard</span>
+                Alert Dashboard
             </a>
 
             <a
