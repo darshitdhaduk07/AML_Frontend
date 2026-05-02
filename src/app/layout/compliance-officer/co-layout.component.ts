@@ -29,6 +29,14 @@ export class ComplianceOfficerLayoutComponent {
         this.isNotificationOpen = !this.isNotificationOpen;
     }
 
+    getPageTitle(): string {
+        const url = this.router.url;
+        if (url.includes('alerts/customer')) return 'Customer Details';
+        if (url.includes('alerts')) return 'Assigned Alerts';
+        if (url.includes('cases')) return 'Investigation Cases';
+        return 'Investigation';
+    }
+
     /**
      * SRS 3.3.1: Session Management for CO
      * Ensures investigation audit logs record the system exit.

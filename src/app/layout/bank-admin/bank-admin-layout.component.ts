@@ -29,6 +29,17 @@ export class BankAdminLayoutComponent {
         this.isNotificationOpen = !this.isNotificationOpen;
     }
 
+    getPageTitle(): string {
+        const url = this.router.url;
+        if (url.includes('dashboard')) return 'Alert Dashboard';
+        if (url.includes('upload')) return 'Batch Upload';
+        if (url.includes('user-management')) return 'User Management';
+        if (url.includes('cases')) return 'Case Tracking';
+        if (url.includes('reports')) return 'Reports';
+        if (url.includes('alerts/customer')) return 'Customer Details';
+        return 'Overview';
+    }
+
     /**
      * SRS 3.1.1 & 3.2.1: Authentication & Session Management
      * Terminates the institutional session and redirects to standard login.

@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="paginator-container">
       <div class="paginator-info">
-        Showing {{ (pageIndex * pageSize) + 1 }} to {{ Math.min((pageIndex + 1) * pageSize, length) }} of {{ length }} results
+        Showing {{ length === 0 ? 0 : (pageIndex * pageSize) + 1 }} to {{ Math.min((pageIndex + 1) * pageSize, length) }} of {{ length }} results
       </div>
       <div class="paginator-actions">
         <button 

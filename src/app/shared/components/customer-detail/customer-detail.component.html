@@ -1,0 +1,134 @@
+<div class="detail-container">
+    <header class="detail-header">
+        <div class="back-link">
+            <a [routerLink]="role === 'ADMIN' ? '/bank/dashboard' : '/co/alerts'">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Back to Dashboard
+            </a>
+        </div>
+        <div class="customer-info">
+            <h1>Customer: {{ customerNumber }}</h1>
+            <div style="display: flex; gap: 16px; align-items: center">
+                <button *ngIf="role === 'OFFICER' && !hasOpenCases" class="btn-create-case" (click)="showCaseModal = true">
+                    <span class="material-symbols-outlined">add_box</span>
+                    Create Case
+                </button>
+                <div class="risk-badge" [style.background-color]="getRiskColor(totalWeight)">
+                    Risk Weight: {{ totalWeight }}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="detail-content">
+        <div *ngIf="loading" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading customer details...</p>
+        </div>
+
+        <div *ngIf="!loading">
+            <div *ngIf="groupedAlerts.length === 0" class="loading-state">
+                <span class="material-symbols-outlined" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px">info</span>
+                <p>No alerts found for this customer.</p>
+            </div>
+
+            <section class="group-section" *ngFor="let group of groupedAlerts">
+                <div class="group-header">
+                    <span class="material-symbols-outlined">
+                        {{ group.group_id.includes('Transaction') ? 'receipt_long' : 'folder' }}
+                    </span>
+                    <h2>
+                        <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 2px">Alert Group ID</span>
+                        {{ group.group_id }}
+                    </h2>
+                </div>
+                
+                <div class="alerts-grid">
+                    <div class="alert-item-card" *ngFor="let alert of group.alerts" [class.false-positive]="alert.falsePositive">
+                        <!-- False Positive Banner -->
+                        <div *ngIf="alert.falsePositive" class="fp-banner">
+                            <span class="material-symbols-outlined" style="font-size: 16px">block</span>
+                            Marked as False Positive — Excluded from risk score
+                        </div>
+
+                        <div class="alert-type-icon">
+                            <span class="material-symbols-outlined">
+                                {{ alert.transaction_number ? 'receipt_long' : 'person_alert' }}
+                            </span>
+                        </div>
+                        <div class="alert-details">
+                            <div class="alert-id-row">
+                                <span class="alert-label">{{ (alert.transaction || alert.transaction_number) ? 'Transaction' : 'Customer Alert' }}</span>
+                                <span class="alert-val">{{ alert.transaction?.transactionNumber || alert.transaction_number || 'N/A' }}</span>
+                            </div>
+                            <div class="rule-code-row">
+                                <span class="rule-code">{{ alert.ruleCode }}</span>
+                                <span class="rule-type" *ngIf="alert.ruleType">{{ alert.ruleType }}</span>
+                            </div>
+                            <p class="rule-desc">{{ alert.ruleDescription }}</p>
+                            
+                            <div class="transaction-details" *ngIf="alert.transaction">
+                                <div class="detail-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Amount</span>
+                                        <span class="detail-value">{{ alert.transaction.amount | currency:'INR' }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Account</span>
+                                        <span class="detail-value">{{ alert.transaction.account }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Type</span>
+                                        <span class="detail-value">{{ alert.transaction.txnType }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Direction</span>
+                                        <span class="detail-value">{{ alert.transaction.direction }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert-footer">
+                                <div style="display: flex; flex-direction: column; gap: 4px">
+                                    <span class="weight-tag">Weight: {{ alert.weight }}</span>
+                                    <span class="status-tag" [class.active]="alert.active">
+                                        {{ alert.active ? 'Open' : 'Closed' }}
+                                    </span>
+                                </div>
+                                <button *ngIf="role === 'OFFICER' && !alert.falsePositive" 
+                                        class="btn-fp" 
+                                        (click)="markAsFalsePositive(alert.id || alert.brokenRuleId || '')">
+                                    Mark False Positive
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Create Case Modal -->
+    <div class="modal-overlay" *ngIf="showCaseModal" (click)="showCaseModal = false">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Create New Case</h2>
+                <p>Initialize a formal investigation case for this customer.</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Case Name</label>
+                    <input type="text" [(ngModel)]="newCase.caseName" placeholder="e.g., Suspicious Structuring Investigation">
+                </div>
+                <div class="form-group">
+                    <label>Case Description</label>
+                    <textarea [(ngModel)]="newCase.caseDescription" rows="4" placeholder="Describe the reason for opening this case..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="showCaseModal = false">Cancel</button>
+                <button class="btn-primary" [disabled]="!newCase.caseName || !newCase.caseDescription" (click)="submitCase()">Create Case</button>
+            </div>
+        </div>
+    </div>
+</div>

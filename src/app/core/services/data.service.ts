@@ -95,7 +95,7 @@ export class DataService {
         );
     }
 
-    createCase(caseData: { caseName: string, caseDiscription: string, customerNumber: string }): Observable<string> {
+    createCase(caseData: { caseName: string, caseDescription: string, customerNumber: string }): Observable<string> {
         return this.http.post(
             `${this.apiUrl}/api/v1/investigation/cases`,
             caseData,
@@ -187,6 +187,28 @@ export class DataService {
             { 
                 headers: this.authService.getHeaders(),
                 responseType: 'blob' 
+            }
+        );
+    }
+
+    hasOpenCases(customerNumber: string): Observable<boolean> {
+        const params = new HttpParams().set('customerNumber', customerNumber);
+        return this.http.get<boolean>(
+            `${this.apiUrl}/api/v1/investigation/cases/open`,
+            { 
+                headers: this.authService.getHeaders(),
+                params
+            }
+        );
+    }
+
+    closeCase(caseId: string): Observable<string> {
+        return this.http.put(
+            `${this.apiUrl}/api/v1/investigation/cases/${caseId}/close`,
+            {},
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
             }
         );
     }

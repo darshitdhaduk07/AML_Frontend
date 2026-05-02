@@ -44,7 +44,7 @@ export class LoginPageComponent {
                 this.router.navigate(['/bank/dashboard']);
                 break;
             case 'COMPLIANCE_OFFICER':
-                this.router.navigate(['/co/dashboard']);
+                this.router.navigate(['/co/alerts']);
                 break;
             default:
                 this.router.navigate(['/admin/login']);

@@ -132,10 +132,17 @@ export const routes: Routes = [
         data: { expectedRoles: ['COMPLIANCE_OFFICER'] },
         children: [
             {
-                path: 'dashboard',
+                path: 'alerts',
                 loadComponent: () =>
-                    import('./features/compliance-officer/dashboard/dashboard.component').then(
-                        (m) => m.ComplianceOfficerDashboardComponent,
+                    import('./features/compliance-officer/assigned-alerts/assigned-alerts.component').then(
+                        (m) => m.CoAssignedAlertsComponent,
+                    ),
+            },
+            {
+                path: 'cases',
+                loadComponent: () =>
+                    import('./features/compliance-officer/investigation-cases/investigation-cases.component').then(
+                        (m) => m.CoInvestigationCasesComponent,
                     ),
             },
             {
@@ -146,7 +153,7 @@ export const routes: Routes = [
                     ),
                 data: { role: 'OFFICER' }
             },
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: '', redirectTo: 'alerts', pathMatch: 'full' },
         ],
     },
 

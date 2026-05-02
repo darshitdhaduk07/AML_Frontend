@@ -28,7 +28,6 @@ export class CasesComponent implements OnInit {
     statuses = [
         { label: 'All Cases', value: '' },
         { label: 'Open', value: 'OPEN' },
-        { label: 'In Progress', value: 'IN_PROGRESS' },
         { label: 'Escalated', value: 'ESCALATED' },
         { label: 'Closed', value: 'CLOSED' }
     ];

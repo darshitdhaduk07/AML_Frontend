@@ -39,7 +39,7 @@
     <div *ngIf="!loading">
         <!-- Flagged Transactions -->
         <div *ngIf="activeTab === 'flagged'" class="report-view">
-            <table class="data-table">
+            <table class="data-table" *ngIf="flaggedTransactions.length > 0">
                 <thead>
                     <tr>
                         <th>Txn Time</th>
@@ -60,7 +60,12 @@
                 </tbody>
             </table>
 
-            <app-paginator
+            <div *ngIf="flaggedTransactions.length === 0" class="empty-state">
+                <span class="material-symbols-outlined">warning</span>
+                <p>No flagged transactions found.</p>
+            </div>
+
+            <app-paginator *ngIf="flaggedTransactions.length > 0"
                 [length]="flaggedTotal"
                 [pageSize]="flaggedPageSize"
                 [pageIndex]="flaggedPage"
@@ -70,7 +75,7 @@
 
         <!-- SAR Logs -->
         <div *ngIf="activeTab === 'sar'" class="report-view">
-            <table class="data-table">
+            <table class="data-table" *ngIf="sarLogs.length > 0">
                 <thead>
                     <tr>
                         <th>Case Name</th>

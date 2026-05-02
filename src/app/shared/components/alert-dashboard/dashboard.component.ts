@@ -24,18 +24,9 @@ interface UniqueCustomer {
     template: `
         <div class="dashboard-container">
             <div class="dashboard-header" *ngIf="role === 'ADMIN'">
-                <div class="tabs" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px">
-                    <button class="tab-btn" [class.active]="activeTab === 'alerts'" (click)="activeTab = 'alerts'">Alerts</button>
-                    <button class="tab-btn" [class.active]="activeTab === 'cases'" (click)="activeTab = 'cases'">Investigation Cases</button>
-                </div>
-                
-                <div *ngIf="activeTab === 'alerts'">
+                <div>
                     <h1>Alert Dashboard</h1>
                     <p>Institutional risk summary by unique customer.</p>
-                </div>
-                <div *ngIf="activeTab === 'cases'">
-                    <h1>Case Management</h1>
-                    <p>Track and audit formal investigation cases.</p>
                 </div>
             </div>
 
@@ -102,7 +93,7 @@ interface UniqueCustomer {
                 ></app-paginator>
             </div>
 
-            <app-case-list *ngIf="activeTab === 'cases'" [role]="role"></app-case-list>
+
 
             <!-- Assignment Modal -->
             <app-assignment-modal
@@ -226,12 +217,19 @@ export class AlertDashboardComponent implements OnInit {
             return;
         }
 
-        this.customers = assignments.map(assignment => ({
-            customer_number: assignment.customerResponseDto?.customerNumber || 'Unknown',
-            totalWeight: assignment.riskScore || 0,
-            alertCount: assignment.customerResponseDto?.alerts?.length || 0,
-            alerts: []
-        }));
+        this.customers = assignments.map(assignment => {
+            const alerts = assignment.alerts || [];
+            const totalWeight = alerts
+                .filter(a => a.falsePositive !== true)
+                .reduce((sum, a) => sum + (a.weight || 0), 0);
+
+            return {
+                customer_number: assignment.customerResponseDto?.customerNumber || 'Unknown',
+                totalWeight,
+                alertCount: alerts.length,
+                alerts: []
+            };
+        });
     }
 
     getRiskColor(weight: number): string {

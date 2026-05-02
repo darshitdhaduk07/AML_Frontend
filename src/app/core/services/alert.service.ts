@@ -14,7 +14,8 @@ export interface Alert {
     transaction?: TransactionDto;
     transaction_number?: string;
     weight: number;
-    id: string;
+    id?: string;
+    brokenRuleId?: string;
     falsePositive: boolean;
 }
 
@@ -42,11 +43,11 @@ export interface CustomerResponseDto {
     nationalityCountry: string;
     countryOfBirth: string;
     familyCode: string;
-    alerts: Alert[];
 }
 
 export interface AssignmentResponseDto {
     customerResponseDto: CustomerResponseDto;
+    alerts: Alert[];
     isOpen: boolean;
     riskScore: number;
 }
@@ -65,10 +66,21 @@ export class AlertService {
         return this.http.get<PaginatedResponse<Alert>>(`${this.apiUrl}/api/v1/rules/alerts`, { params });
     }
 
+    getAllAlerts(page: number = 0, size: number = 10): Observable<PaginatedResponse<Alert>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<PaginatedResponse<Alert>>(`${this.apiUrl}/api/v1/rules/alerts/all`, { params });
+    }
+
     getAssignments(page: number = 0, size: number = 10): Observable<PaginatedResponse<AssignmentResponseDto>> {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
         return this.http.get<PaginatedResponse<AssignmentResponseDto>>(`${this.apiUrl}/api/v1/investigation/assignments`, { params });
+    }
+
+    getCustomerAlerts(customerNumber: string): Observable<Alert[]> {
+        return this.http.get<Alert[]>(`${this.apiUrl}/api/v1/rules/alerts/customer/${customerNumber}`);
     }
 }

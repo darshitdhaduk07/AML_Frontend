@@ -55,10 +55,18 @@ export class ReportsComponent implements OnInit {
 
     loadFlaggedTransactions(): void {
         this.loading = true;
-        this.alertService.getAlerts(this.flaggedPage, this.flaggedPageSize).subscribe({
-            next: (resp: PaginatedResponse<Alert>) => {
-                this.flaggedTransactions = resp.content;
-                this.flaggedTotal = resp.totalElements;
+        this.alertService.getAllAlerts(this.flaggedPage, this.flaggedPageSize).subscribe({
+            next: (resp: any) => {
+                if (resp && resp.content) {
+                    this.flaggedTransactions = resp.content;
+                    this.flaggedTotal = resp.totalElements;
+                } else if (Array.isArray(resp)) {
+                    this.flaggedTransactions = resp;
+                    this.flaggedTotal = resp.length;
+                } else {
+                    this.flaggedTransactions = [];
+                    this.flaggedTotal = 0;
+                }
                 this.loading = false;
             },
             error: () => this.loading = false

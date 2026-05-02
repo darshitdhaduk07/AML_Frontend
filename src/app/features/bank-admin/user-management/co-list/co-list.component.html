@@ -20,7 +20,7 @@
             <p>Loading officers...</p>
         </div>
 
-        <table *ngIf="!isLoading">
+        <table *ngIf="!isLoading && filteredOfficers.length > 0">
             <thead>
                 <tr>
                     <th>Compliance Officer</th>
@@ -55,15 +55,12 @@
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="filteredOfficers.length === 0">
-                    <td colspan="4" class="empty-row">
-                        <div class="empty-state">
-                            <span class="material-symbols-outlined">person_off</span>
-                            <p>No compliance officers found matching your search.</p>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
+
+        <div *ngIf="!isLoading && filteredOfficers.length === 0" class="empty-state">
+            <span class="material-symbols-outlined">person_off</span>
+            <p>No compliance officers found matching your search.</p>
+        </div>
     </div>
 </div>
