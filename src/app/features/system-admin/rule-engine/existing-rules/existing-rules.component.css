@@ -190,6 +190,34 @@
     align-items: center;
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.delete-btn .material-symbols-outlined {
+    font-size: 18px;
+}
+
 .rule-code {
     font-weight: 700;
     color: #0f172a;

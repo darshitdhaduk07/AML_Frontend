@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../../../core/services/data.service';
+import { ToastService } from '../../../../core/services/toast.service';
 import { TenantDto } from '../../../../shared/models/tenant.dto';
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
 import { PaginatedResponse } from '../../../../shared/models/paginated-response';
@@ -14,6 +15,7 @@ import { PaginatedResponse } from '../../../../shared/models/paginated-response'
 })
 export class ExistingRulesComponent implements OnInit {
   private dataService = inject(DataService);
+  private toastService = inject(ToastService);
 
   public tenants: TenantDto[] = [];
   public expandedTenants: Set<string> = new Set();
@@ -30,6 +32,7 @@ export class ExistingRulesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to fetch tenants', error);
+        this.toastService.error('Failed to fetch tenants');
       }
     });
   }
@@ -58,6 +61,7 @@ export class ExistingRulesComponent implements OnInit {
       },
       error: (error) => {
         console.error(`Failed to fetch rules for ${tenantName}`, error);
+        this.toastService.error(`Failed to fetch rules for ${tenantName}`);
         this.loadingTenants.delete(tenantName);
       }
     });
@@ -90,5 +94,20 @@ export class ExistingRulesComponent implements OnInit {
 
   getObjectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
+  }
+
+  deleteRule(tenantName: string, selectedRuleId: string): void {
+    if (confirm('Are you sure you want to delete this rule?')) {
+      this.dataService.deleteRule(tenantName, selectedRuleId).subscribe({
+        next: () => {
+          this.toastService.success('Rule deleted successfully');
+          this.fetchRules(tenantName);
+        },
+        error: (error) => {
+          console.error(`Failed to delete rule ${selectedRuleId} for ${tenantName}`, error);
+          this.toastService.error('Failed to delete rule');
+        }
+      });
+    }
   }
 }

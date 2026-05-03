@@ -60,6 +60,16 @@ export class DataService {
         );
     }
 
+    deleteRule(tenantName: string, ruleId: string): Observable<string> {
+        return this.http.delete(
+            `${this.apiUrl}/api/v1/rules/${tenantName}/${ruleId}`,
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
+
     registerTenant(tenantData: { tenantName: string, email: string }): Observable<string> {
         return this.http.post(
             `${this.apiUrl}/api/v1/auth/register/tenant`,

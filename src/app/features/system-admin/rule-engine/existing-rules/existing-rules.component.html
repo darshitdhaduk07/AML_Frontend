@@ -41,10 +41,14 @@
 
                 <div class="rules-grid" *ngIf="!isLoading(tenant.tenantName) && getRules(tenant.tenantName).length > 0">
                     <div *ngFor="let rule of getRules(tenant.tenantName)" class="rule-card">
-                        <!-- ... existing rule card content ... -->
                         <div class="rule-card-header">
                             <span class="rule-code">{{ rule.ruleCode }}</span>
-                            <span class="rule-weight">Weight: {{ rule.weight }}</span>
+                            <div class="header-right">
+                                <span class="rule-weight">Weight: {{ rule.weight }}</span>
+                                <button class="delete-btn" (click)="deleteRule(tenant.tenantName, rule.selectedRuleId)" title="Delete Rule">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
                         </div>
                         <p class="rule-description">{{ rule.description }}</p>
                         
