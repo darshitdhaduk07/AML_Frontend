@@ -156,6 +156,7 @@
                         <th>Type</th>
                         <th>Records</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -169,6 +170,12 @@
                                 {{ batch.status }}
                             </span>
                         </td>
+                        <td>
+                            <button *ngIf="batch.status === 'FAILED' || batch.details || batch.errorMessage" class="details-btn" (click)="openDetails(batch)">
+                                <span class="material-symbols-outlined">info</span>
+                                Details
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -177,6 +184,50 @@
                 <span class="material-symbols-outlined">history</span>
                 <p>No data ingestion history found.</p>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal-overlay" *ngIf="showDetailsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="title-with-icon">
+                <span class="material-symbols-outlined error-icon">error</span>
+                <h2>Ingestion Details</h2>
+            </div>
+            <button class="close-modal" (click)="closeDetails()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="batch-info-summary">
+                <div class="info-item">
+                    <label>File</label>
+                    <span>{{ selectedBatch?.fileName }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Records Processed</label>
+                    <span>{{ selectedBatch?.recordCount }}</span>
+                </div>
+            </div>
+
+            <div class="error-container">
+                <h3>Detected Errors</h3>
+                <div class="error-list">
+                    <div class="error-item" *ngFor="let err of selectedBatchErrors">
+                        <div class="error-row" *ngIf="err.row && err.row !== -1">Row {{ err.row }}</div>
+                        <div class="error-msg">
+                            <span class="field-label" *ngIf="err.field">{{ err.field }}:</span>
+                            {{ err.message }}
+                        </div>
+                        <div class="error-code" *ngIf="err.errorCode">{{ err.errorCode }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="primary-btn" (click)="closeDetails()">Close</button>
         </div>
     </div>
 </div>

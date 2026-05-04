@@ -32,6 +32,11 @@ export class ReportsComponent implements OnInit {
     batchSummaries: any[] = [];
     loading: boolean = false;
 
+    // Details Modal
+    showDetailsModal: boolean = false;
+    selectedBatch: any = null;
+    selectedBatchErrors: any[] = [];
+
     // Pagination for Flagged Transactions
     flaggedPage: number = 0;
     flaggedPageSize: number = 10;
@@ -119,6 +124,30 @@ export class ReportsComponent implements OnInit {
             },
             error: () => this.loading = false
         });
+    }
+
+    openDetails(batch: any): void {
+        this.selectedBatch = batch;
+        this.selectedBatchErrors = [];
+        
+        if (batch.details) {
+            try {
+                this.selectedBatchErrors = JSON.parse(batch.details);
+            } catch (e) {
+                console.error('Failed to parse batch details', e);
+                this.selectedBatchErrors = [{ message: batch.details }];
+            }
+        } else if (batch.errorMessage) {
+            this.selectedBatchErrors = [{ message: batch.errorMessage }];
+        }
+        
+        this.showDetailsModal = true;
+    }
+
+    closeDetails(): void {
+        this.showDetailsModal = false;
+        this.selectedBatch = null;
+        this.selectedBatchErrors = [];
     }
 
     downloadAlertPdf(): void {
