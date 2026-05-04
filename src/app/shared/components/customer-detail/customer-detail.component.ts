@@ -139,4 +139,19 @@ export class CustomerDetailComponent implements OnInit {
             }
         });
     }
+
+    closeAlert() {
+        if (confirm('Are you sure you want to close all alerts for this customer?')) {
+            this.dataService.closeAlert(this.customerNumber).subscribe({
+                next: (resp) => {
+                    this.toastService.success('Alert closed successfully');
+                    this.loadCustomerAlerts();
+                },
+                error: (err) => {
+                    console.error('Error closing alert:', err);
+                    this.toastService.error('Failed to close alert');
+                }
+            });
+        }
+    }
 }

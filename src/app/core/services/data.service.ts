@@ -222,4 +222,15 @@ export class DataService {
             }
         );
     }
+
+    closeAlert(customerNumber: string): Observable<string> {
+        return this.http.put(
+            `${this.apiUrl}/api/v1/investigation/alerts/${customerNumber}/close`,
+            {},
+            { 
+                headers: this.authService.getHeaders(),
+                responseType: 'text'
+            }
+        );
+    }
 }

@@ -12,6 +12,14 @@
 }
 .btn-create-case:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
 
+.btn-close-alert {
+    display: flex; align-items: center; gap: 8px; 
+    padding: 8px 20px; background: white; color: #ef4444; 
+    border: 1px solid #fee2e2; border-radius: 8px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-close-alert:hover { background: #fef2f2; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); }
+
 .group-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #e2e8f0; }
 .group-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: #1e293b; }
 .group-header h2 { font-size: 18px; font-weight: 700; margin: 0; }

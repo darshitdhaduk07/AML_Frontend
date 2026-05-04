@@ -13,6 +13,10 @@
                     <span class="material-symbols-outlined">add_box</span>
                     Create Case
                 </button>
+                <button *ngIf="role === 'OFFICER' && !hasOpenCases" class="btn-close-alert" (click)="closeAlert()">
+                    <span class="material-symbols-outlined">cancel</span>
+                    Close Alert
+                </button>
                 <div class="risk-badge" [style.background-color]="getRiskColor(totalWeight)">
                     Risk Weight: {{ totalWeight }}
                 </div>

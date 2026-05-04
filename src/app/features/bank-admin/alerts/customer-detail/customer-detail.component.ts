@@ -158,11 +158,11 @@ export class CustomerDetailComponent implements OnInit {
     loadCustomerAlerts() {
         this.loading = true;
         this.alertService.getAlerts().subscribe({
-            next: (data) => {
-                const customerAlerts = data.filter(a => a.customer_number === this.customerNumber);
-                this.totalWeight = customerAlerts.reduce((sum, a) => sum + (a.weight || 0), 0);
+            next: (data:any) => {
+                const customerAlerts = data.filter((a: any) => a.customer_number === this.customerNumber);
+                this.totalWeight = customerAlerts.reduce((sum: any, a: any) => sum + (a.weight || 0), 0);
                 
-                const groups = customerAlerts.reduce((acc, alert) => {
+                const groups = customerAlerts.reduce((acc: any, alert: any) => {
                     if (!acc[alert.group_id]) {
                         acc[alert.group_id] = [];
                     }
