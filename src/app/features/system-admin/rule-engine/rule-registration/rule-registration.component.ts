@@ -119,7 +119,9 @@ export class RuleRegistrationComponent {
         this.dataService.createRule(payload).subscribe({
             next: (response) => {
                 this.toastService.success(response || 'Rule created successfully');
-                this.router.navigate(['/sys/dashboard']);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 200); // 1000 ms = 1 second
             },
             error: (error) => {
                 console.error('Failed to create rule', error);

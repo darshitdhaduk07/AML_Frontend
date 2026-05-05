@@ -27,7 +27,7 @@
                     <span class="case-name">{{ case.caseName }}</span>
                     <span class="case-desc">{{ case.caseDescription }}</span>
                 </div>
-                
+
                 <div class="customer-info">
                     <span class="material-symbols-outlined">person</span>
                     {{ case.customerNumber }}
@@ -41,20 +41,18 @@
                 </div>
 
                 <div class="actions">
-                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" 
-                            class="btn-action escalate" 
-                            (click)="escalate(case.id)">
+                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" class="btn-action escalate"
+                        (click)="escalate(case.id)">
                         <span class="material-symbols-outlined">trending_up</span>
                         Escalate
                     </button>
-                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN' && !case.sarFiled"
-                            class="btn-action sar"
-                            (click)="fileSar(case.id)">
+                    <button
+                        *ngIf="role === 'OFFICER' && (case.caseStatus === 'OPEN' || case.caseStatus === 'ESCALATED') && !case.sarFiled"
+                        class="btn-action sar" (click)="fileSar(case.id)">
                         <span class="material-symbols-outlined">description</span>
                         File SAR
-                    </button>                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" 
-                            class="btn-action close" 
-                            (click)="closeCase(case.id)">
+                    </button> <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" class="btn-action close"
+                        (click)="closeCase(case.id)">
                         <span class="material-symbols-outlined">close</span>
                         Close Case
                     </button>
@@ -62,12 +60,7 @@
             </div>
         </div>
 
-        <app-paginator
-            *ngIf="!loading && totalElements > 0"
-            [length]="totalElements"
-            [pageSize]="pageSize"
-            [pageIndex]="pageIndex"
-            (page)="onPageChange($event)"
-        ></app-paginator>
+        <app-paginator *ngIf="!loading && totalElements > 0" [length]="totalElements" [pageSize]="pageSize"
+            [pageIndex]="pageIndex" (page)="onPageChange($event)"></app-paginator>
     </div>
 </div>
