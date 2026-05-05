@@ -47,13 +47,12 @@
                         <span class="material-symbols-outlined">trending_up</span>
                         Escalate
                     </button>
-                    <button *ngIf="role === 'OFFICER' && !case.sarFiled" 
-                            class="btn-action sar" 
+                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN' && !case.sarFiled"
+                            class="btn-action sar"
                             (click)="fileSar(case.id)">
                         <span class="material-symbols-outlined">description</span>
                         File SAR
-                    </button>
-                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" 
+                    </button>                    <button *ngIf="role === 'OFFICER' && case.caseStatus === 'OPEN'" 
                             class="btn-action close" 
                             (click)="closeCase(case.id)">
                         <span class="material-symbols-outlined">close</span>

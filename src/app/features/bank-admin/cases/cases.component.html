@@ -65,6 +65,7 @@
                     <td>
                         <div class="actions-cell">
                             <button 
+                                *ngIf="case.caseStatus !== 'CLOSED'"
                                 class="action-btn" 
                                 (click)="onViewDetails(case.customerNumber)"
                                 title="View Details"

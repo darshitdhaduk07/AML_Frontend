@@ -31,7 +31,7 @@
 
 .table-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 1.5fr;
     padding: 20px 24px;
     background: #ffffff;
     border-bottom: 1px solid #f1f5f9;
@@ -47,7 +47,7 @@
 
 .alert-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 1.5fr;
     padding: 24px;
     align-items: center;
     border-bottom: 1px solid #f1f5f9;
@@ -160,6 +160,8 @@
     cursor: pointer;
     transition: all 0.2s;
     border: 1px solid transparent;
+    white-space: nowrap;
+    min-width: 120px;
 }
 
 .btn-outline {

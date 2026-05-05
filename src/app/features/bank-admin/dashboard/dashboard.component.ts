@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AlertService, Alert } from '../../../core/services/alert.service';
+import { AlertService, Alert, CustomerResponseDto } from '../../../core/services/alert.service';
 import { AssignmentModalComponent } from './components/assignment-modal/assignment-modal.component';
 import { DataService } from '../../../core/services/data.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 interface UniqueCustomer {
     customer_number: string;
@@ -27,7 +28,6 @@ interface UniqueCustomer {
                 <div class="table-header">
                     <div class="header-item">Customer Number</div>
                     <div class="header-item" style="text-align: center">Risk Weight</div>
-                    <div class="header-item" style="text-align: center">Total Alerts</div>
                     <div class="header-item" style="text-align: right">Actions</div>
                 </div>
 
@@ -61,12 +61,6 @@ interface UniqueCustomer {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="alert-count">
-                        <span class="status-badge" [style.background]="'#f1f5f9'" [style.color]="'#475569'">
-                            {{ customer.alertCount }}
-                        </span>
                     </div>
 
                     <div class="actions">
@@ -108,7 +102,8 @@ export class BankAdminDashboardComponent implements OnInit {
     loadAlerts() {
         this.loading = true;
         this.alertService.getAlerts().subscribe({
-            next: (data) => {
+            next: (response: any) => {
+                const data = response.content || response;
                 this.groupAlertsByCustomer(data);
                 this.loading = false;
             },
@@ -119,23 +114,18 @@ export class BankAdminDashboardComponent implements OnInit {
         });
     }
 
-    groupAlertsByCustomer(alerts: Alert[]) {
-        const grouped = alerts.reduce((acc, alert) => {
-            if (!acc[alert.customer_number]) {
-                acc[alert.customer_number] = {
-                    customer_number: alert.customer_number,
-                    totalWeight: 0,
-                    alertCount: 0,
-                    alerts: []
-                };
-            }
-            acc[alert.customer_number].totalWeight += alert.weight || 0;
-            acc[alert.customer_number].alertCount++;
-            acc[alert.customer_number].alerts.push(alert);
-            return acc;
-        }, {} as Record<string, UniqueCustomer>);
+    groupAlertsByCustomer(data: any) {
+        if (!Array.isArray(data)) {
+            this.customers = [];
+            return;
+        }
 
-        this.customers = Object.values(grouped);
+        this.customers = data.map((c: any) => ({
+            customer_number: c.customerNumber || c.customer_number || 'Unknown',
+            totalWeight: c.riskScore || 0,
+            alertCount: 0,
+            alerts: []
+        }));
     }
 
     getRiskColor(weight: number): string {

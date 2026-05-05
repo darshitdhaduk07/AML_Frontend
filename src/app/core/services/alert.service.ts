@@ -43,6 +43,7 @@ export interface CustomerResponseDto {
     nationalityCountry: string;
     countryOfBirth: string;
     familyCode: string;
+    riskScore: number;
 }
 
 export interface AssignmentResponseDto {
@@ -59,11 +60,11 @@ export class AlertService {
     private apiUrl = environment.apiUrl;
     private http = inject(HttpClient);
 
-    getAlerts(page: number = 0, size: number = 10): Observable<PaginatedResponse<Alert>> {
+    getAlerts(page: number = 0, size: number = 10): Observable<PaginatedResponse<CustomerResponseDto>> {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.http.get<PaginatedResponse<Alert>>(`${this.apiUrl}/api/v1/rules/alerts`, { params });
+        return this.http.get<PaginatedResponse<CustomerResponseDto>>(`${this.apiUrl}/api/v1/rules/alerts`, { params });
     }
 
     getAllAlerts(page: number = 0, size: number = 10): Observable<PaginatedResponse<Alert>> {

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { finalize, Observable } from 'rxjs';
-import { AlertService, Alert, AssignmentResponseDto } from '../../../core/services/alert.service';
+import { AlertService, Alert, AssignmentResponseDto, CustomerResponseDto } from '../../../core/services/alert.service';
 import { AssignmentModalComponent } from './components/assignment-modal/assignment-modal.component';
 import { DataService } from '../../../core/services/data.service';
 import { ToastService } from '../../../core/services/toast.service';
@@ -30,11 +30,11 @@ interface UniqueCustomer {
                 </div>
             </div>
 
-            <div *ngIf="activeTab === 'alerts'" class="alerts-card">
+            <div *ngIf="activeTab === 'alerts'" class="alerts-card" [class.admin-view]="role === 'ADMIN'">
                 <div class="table-header">
                     <div class="header-item">Customer Number</div>
                     <div class="header-item" style="text-align: center">Risk Weight</div>
-                    <div class="header-item" style="text-align: center">Total Alerts</div>
+                    <div class="header-item" style="text-align: center" *ngIf="role !== 'ADMIN'">Total Alerts</div>
                     <div class="header-item" style="text-align: right">Actions</div>
                 </div>
 
@@ -71,7 +71,7 @@ interface UniqueCustomer {
                             </div>
                         </div>
 
-                        <div class="alert-count">
+                        <div class="alert-count" *ngIf="role !== 'ADMIN'">
                             <span class="status-badge" [style.background]="'#f1f5f9'" [style.color]="'#475569'">
                                 {{ customer.alertCount }}
                             </span>
@@ -186,29 +186,40 @@ export class AlertDashboardComponent implements OnInit {
         this.loadAlerts();
     }
 
-    groupAlertsByCustomer(alerts: Alert[]) {
-        if (!Array.isArray(alerts)) {
+    groupAlertsByCustomer(data: any) {
+        if (!Array.isArray(data)) {
             this.customers = [];
             return;
         }
 
-        const grouped = alerts.reduce((acc: Record<string, UniqueCustomer>, alert: Alert) => {
-            const customerNumber = alert.customer_number || 'Unknown';
-            if (!acc[customerNumber]) {
-                acc[customerNumber] = {
-                    customer_number: customerNumber,
-                    totalWeight: 0,
-                    alertCount: 0,
-                    alerts: []
-                };
-            }
-            acc[customerNumber].totalWeight += alert.weight || 0;
-            acc[customerNumber].alertCount++;
-            acc[customerNumber].alerts.push(alert);
-            return acc;
-        }, {} as Record<string, UniqueCustomer>);
+        if (this.role === 'ADMIN') {
+            // data is CustomerResponseDto[]
+            this.customers = data.map((c: CustomerResponseDto) => ({
+                customer_number: c.customerNumber,
+                totalWeight: c.riskScore || 0,
+                alertCount: 0,
+                alerts: []
+            }));
+        } else {
+            // data is Alert[] (fallback or legacy)
+            const grouped = data.reduce((acc: Record<string, UniqueCustomer>, alert: Alert) => {
+                const customerNumber = alert.customer_number || 'Unknown';
+                if (!acc[customerNumber]) {
+                    acc[customerNumber] = {
+                        customer_number: customerNumber,
+                        totalWeight: 0,
+                        alertCount: 0,
+                        alerts: []
+                    };
+                }
+                acc[customerNumber].totalWeight += alert.weight || 0;
+                acc[customerNumber].alertCount++;
+                acc[customerNumber].alerts.push(alert);
+                return acc;
+            }, {} as Record<string, UniqueCustomer>);
 
-        this.customers = Object.values(grouped);
+            this.customers = Object.values(grouped);
+        }
     }
 
     mapAssignmentsToCustomers(assignments: AssignmentResponseDto[]) {
